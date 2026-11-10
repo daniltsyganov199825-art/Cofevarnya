@@ -1,4 +1,4 @@
-const CACHE = 'kofevarnya-v4';
+const CACHE = 'kofevarnya-v6';
 const FILES = ['./', './index.html', './manifest.webmanifest'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

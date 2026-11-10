@@ -17,385 +17,595 @@
     --bg:#f6efe6; --card:#fffaf3; --ink:#2b1d14; --muted:#8a7565; --line:#e7d9c8;
     --brown:#6b4226; --brown2:#8b5a36; --cream:#efe1cf; --accent:#c8763a;
     --ok:#3f7d4e; --warn:#d49a1f; --bad:#c2412d;
-    --r:16px;
+    --font:-apple-system,'Segoe UI',Roboto,system-ui,sans-serif;
   }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,system-ui,sans-serif}
-  button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none}
-  header{display:flex;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;background:var(--brown);color:#fff6ea;position:sticky;top:0;z-index:5}
-  header h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.3px}
-  header .sub{font-size:12px;opacity:.75}
-  header .sp{flex:1}
-  .stat{font-size:12px;text-align:right;line-height:1.3;opacity:.9}
-  .stat b{font-size:15px}
-  .iconbtn{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.12);font-size:18px;color:#fff6ea}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+  input,textarea,select{-webkit-user-select:text;user-select:text}
+  html{overflow:hidden}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);overscroll-behavior:none}
+  body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+  button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-action:manipulation}
+  .view{display:none;flex:1;min-height:0;flex-direction:column}
+  body[data-view="setup"] #vSetup, body[data-view="login"] #vLogin, body[data-view="work"] #vWork, body[data-view="admin"] #vAdmin{display:flex}
 
-  .tabs{display:none;gap:6px;padding:10px 12px 0}
-  .tabs button{flex:1;padding:12px;border-radius:12px;background:var(--cream);font-weight:700;font-size:15px}
+  header{flex:none;display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:var(--brown);color:#fff6ea}
+  header h1{font-size:17px;margin:0;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .sp{flex:1}
+  .stat{font-size:12px;text-align:right;line-height:1.25;opacity:.9;white-space:nowrap}
+  .stat b{font-size:14px}
+  .hbtn{padding:9px 11px;border-radius:10px;background:rgba(255,255,255,.14);font-size:13px;font-weight:800;color:#fff6ea;white-space:nowrap}
+  .sync{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;opacity:.95;white-space:nowrap}
+  .sync i{width:9px;height:9px;border-radius:50%;background:#9aa;display:inline-block}
+  .sync.s-ok i{background:#7fd48f} .sync.s-wait i{background:#ffb347} .sync.s-off i{background:#ff7b6b}
+
+  .tabs{flex:none;display:none;gap:6px;padding:8px 10px 0}
+  .tabs button{flex:1;padding:11px;border-radius:12px;background:var(--cream);font-weight:800;font-size:15px}
   .tabs button.on{background:var(--ink);color:#fff}
   .badge{display:inline-block;min-width:22px;padding:1px 7px;border-radius:20px;background:var(--accent);color:#fff;font-size:13px;margin-left:4px}
 
-  main{display:grid;grid-template-columns:minmax(340px,1fr) minmax(360px,1.15fr);gap:16px;padding:16px;align-items:start}
-  section.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
-  h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:4px 2px 10px;font-weight:800;display:flex;align-items:center;gap:8px}
-  h2 .grow{flex:1}
+  main{flex:1;min-height:0;display:grid;grid-template-columns:1.1fr 1fr;gap:12px;padding:12px calc(12px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left))}
+  .panel{min-width:0;min-height:0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:8px}
 
-  .sizes{display:flex;gap:6px;margin-bottom:12px}
-  .sizes button{flex:1;padding:10px 0;border-radius:12px;border:2px solid var(--line);font-weight:800;font-size:15px;background:#fff}
-  .sizes button.on{border-color:var(--brown);background:var(--brown);color:#fff}
-  .sizes .lbl{font-size:12px;color:var(--muted);align-self:center;padding-right:4px;font-weight:700}
+  .screen{flex:1;min-height:0;display:none;flex-direction:column;gap:8px}
+  .screen.on{display:flex}
+  .drinks{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,4),1fr);grid-auto-rows:1fr;gap:7px}
+  .drink{border-radius:14px;font-weight:800;font-size:clamp(13px,2.1vh,19px);line-height:1.1;padding:4px;border:1.5px solid transparent;transition:transform .07s}
+  .drink:active,.opt:active,.key:active{transform:scale(.95)}
+  .c-coffee{background:#ecd5bb;border-color:#dfc3a3}
+  .c-other{background:#fff;border-color:var(--line)}
+  .c-tea{background:#e6ead0;border-color:#d3d9b3}
+  .legend{flex:none;display:flex;gap:12px;font-size:11px;color:var(--muted);font-weight:700;padding:0 2px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .opthead{flex:none;display:flex;align-items:center;gap:8px}
+  .back{padding:12px 14px;border-radius:12px;background:var(--cream);font-weight:800;font-size:15px}
+  .optname{flex:1;font-size:22px;font-weight:800;line-height:1.1}
+  .optbody{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+  .lbl{flex:none;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:800;margin-top:2px}
+  .row{display:grid;gap:7px;grid-auto-rows:1fr}
+  .sizes{flex:1.1;grid-template-columns:repeat(3,1fr)}
+  .mods{flex:2} .syrs{flex:2}
+  .opt{border-radius:12px;background:#fff;border:2px solid var(--line);font-weight:800;font-size:clamp(12px,1.9vh,17px);line-height:1.1;padding:3px}
+  .sizes .opt{font-size:clamp(16px,2.6vh,24px)}
+  .opt.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .syrs .opt.on{background:var(--accent);border-color:var(--accent)}
+  .addbtn{flex:none;padding:16px;border-radius:14px;background:var(--accent);color:#fff;font-weight:800;font-size:18px}
+  .bottom{flex:none;display:flex;flex-direction:column;gap:7px;border-top:1.5px dashed var(--line);padding-top:8px}
+  .draftrow{display:flex;gap:6px;overflow-x:auto;min-height:38px;align-items:center;scrollbar-width:none}
+  .draftrow::-webkit-scrollbar{display:none}
+  .dchip{flex:none;display:flex;align-items:center;gap:6px;padding:7px 6px 7px 11px;border-radius:10px;background:var(--cream);font-weight:800;font-size:14px;white-space:nowrap}
+  .dchip small{color:var(--muted);font-weight:700}
+  .x{width:26px;height:26px;border-radius:8px;background:#f3e6e3;color:var(--bad);font-weight:800;font-size:16px}
+  .dempty{color:var(--muted);font-size:13px;font-weight:600}
+  .sendrow{display:flex;gap:7px}
+  .inp{flex:1;min-width:0;padding:12px;border-radius:12px;border:1.5px solid var(--line);font:600 15px var(--font);background:#fff;color:var(--ink);width:100%}
+  .send{flex:1.2;padding:14px 10px;border-radius:12px;background:var(--ink);color:#fff;font-weight:800;font-size:16px;white-space:nowrap}
+  .send:disabled{opacity:.3}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-bottom:14px}
-  .drink{min-height:64px;padding:10px 8px;border-radius:14px;background:#fff;border:1.5px solid var(--line);font-weight:700;font-size:15px;line-height:1.15;transition:transform .08s, background .15s;position:relative}
-  .drink.coffee{background:#f3e3d0;border-color:#e4cbb0}
-  .drink.tea{background:#eef0df;border-color:#d9dcc0}
-  .mods.syr button.on{background:var(--accent);border-color:var(--accent)}
-  .drink:active{transform:scale(.95)}
-  .drink.sel{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 0 0 3px var(--accent)}
-  .pending{position:sticky;bottom:8px;z-index:3;display:flex;gap:10px;align-items:center;background:var(--ink);color:#fff;border-radius:16px;padding:10px 10px 10px 14px;margin:6px 0 14px;box-shadow:0 8px 24px rgba(43,29,20,.25)}
-  .pending.empty{background:var(--cream);color:var(--muted);box-shadow:none;position:static}
-  .pending.empty .pcancel{display:none}
-  .ptxt{flex:1;font-size:15px;line-height:1.3}
-  .ptxt b{font-size:17px}
-  .ptags{font-size:12px;color:#ffcf9c;font-weight:700}
-  .pbtns{display:flex;gap:6px}
-  .pcancel{width:44px;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;font-size:20px;font-weight:800}
-  .padd{padding:14px 16px;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;white-space:nowrap}
-  .padd:disabled{opacity:.4}
-
-  .mods{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-  .mods button{padding:8px 12px;border-radius:30px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:13px}
-  .mods button.on{background:var(--ink);border-color:var(--ink);color:#fff}
-
-  .draft{border:2px dashed var(--line);border-radius:14px;padding:10px;min-height:60px}
-  .draft.empty{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
-  .ditem{display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line)}
-  .ditem:last-child{border-bottom:0}
-  .ditem .nm{flex:1;font-weight:700}
-  .ditem .tags{font-size:12px;color:var(--muted);font-weight:600}
-  .chip{padding:6px 10px;border-radius:10px;background:var(--cream);font-weight:800;font-size:13px}
-  .x{width:32px;height:32px;border-radius:10px;background:#f3e6e3;color:var(--bad);font-size:18px;font-weight:800}
-  .who{width:100%;margin:10px 0;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);font:600 15px -apple-system,Roboto,system-ui,sans-serif;background:#fff;color:var(--ink)}
-  .who:focus{outline:2px solid var(--brown2)}
-  .send{width:100%;padding:16px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:17px}
-  .send:disabled{opacity:.35}
-
-  .queue{display:flex;flex-direction:column;gap:10px}
-  .order{background:#fff;border:1.5px solid var(--line);border-left:8px solid var(--ok);border-radius:14px;padding:12px 12px 10px;animation:pop .25s ease}
-  .order.warn{border-left-color:var(--warn)}
-  .order.bad{border-left-color:var(--bad)}
-  .order.first{box-shadow:0 0 0 3px var(--ink) inset, 0 6px 18px rgba(43,29,20,.12)}
-  @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
-  .ohead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-  .num{font-size:26px;font-weight:800;line-height:1}
-  .next{font-size:11px;font-weight:800;background:var(--ink);color:#fff;padding:3px 8px;border-radius:6px;letter-spacing:.5px}
-  .otime{font-size:13px;color:var(--muted);font-weight:600}
-  .wait{margin-left:auto;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+  .qhead{flex:none;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:800;padding:2px 4px}
+  .qscroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding:2px}
+  .order{background:#fff;border:1.5px solid var(--line);border-left:8px solid var(--ok);border-radius:14px;padding:10px 10px 9px}
+  .order.warn{border-left-color:var(--warn)} .order.bad{border-left-color:var(--bad)}
+  .order.first{box-shadow:0 0 0 3px var(--ink) inset}
+  .ohead{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+  .num{font-size:24px;font-weight:800;line-height:1}
+  .next{font-size:10px;font-weight:800;background:var(--ink);color:#fff;padding:3px 7px;border-radius:6px}
+  .otime{font-size:12px;color:var(--muted);font-weight:700}
+  .wait{margin-left:auto;font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
   .order.warn .wait{color:var(--warn)} .order.bad .wait{color:var(--bad)}
-  .owho{font-size:14px;font-weight:700;color:var(--brown2);margin-bottom:6px}
-  .items{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-  .it{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;background:var(--bg);text-align:left;width:100%;font-size:16px;font-weight:700}
+  .owho{font-size:14px;font-weight:800;color:var(--brown2);margin-bottom:5px}
+  .items{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+  .it{display:flex;align-items:center;gap:9px;padding:9px;border-radius:10px;background:var(--bg);text-align:left;width:100%;font-size:16px;font-weight:800}
   .it .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--brown2);flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
-  .it.done{opacity:.5;text-decoration:line-through}
+  .it.done{opacity:.5} .it.done .nm{text-decoration:line-through}
   .it.done .box{background:var(--ok);border-color:var(--ok)}
-  .it .sz{margin-left:auto;font-size:13px;color:var(--muted);text-decoration:none}
-  .it .tg{font-size:12px;color:var(--accent);font-weight:700}
-  .oact{display:flex;gap:8px}
+  .tg{display:block;font-size:12px;color:var(--accent);font-weight:700}
+  .it .sz{margin-left:auto;font-size:13px;color:var(--muted)}
+  .oact{display:flex;gap:7px}
   .give{flex:1;padding:13px;border-radius:12px;background:var(--ok);color:#fff;font-weight:800;font-size:16px}
-  .del{padding:13px 14px;border-radius:12px;background:#f3e6e3;color:var(--bad);font-weight:700}
-  .emptyq{text-align:center;color:var(--muted);padding:40px 10px;font-weight:600}
+  .del{padding:13px 12px;border-radius:12px;background:#f3e6e3;color:var(--bad);font-weight:800;font-size:13px;min-width:86px}
+  .del.armed{background:var(--bad);color:#fff}
+  .emptyq{text-align:center;color:var(--muted);padding:40px 10px;font-weight:700}
   .emptyq div{font-size:40px;margin-bottom:6px}
-
-  details.served{margin-top:14px}
-  details.served summary{cursor:pointer;font-weight:700;color:var(--muted);padding:6px 2px;font-size:14px}
-  .srow{display:flex;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);font-size:14px}
-  .srow .s1{font-weight:800;width:40px}
+  details.served summary{cursor:pointer;font-weight:800;color:var(--muted);padding:8px 4px;font-size:14px}
+  .srow{display:flex;gap:8px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);font-size:13px}
+  .srow .s1{font-weight:800;min-width:38px}
   .srow .s2{flex:1;color:var(--muted)}
-  .undo{font-size:13px;font-weight:700;color:var(--brown2);padding:6px 8px;border-radius:8px;background:var(--cream)}
+  .undo{font-size:13px;font-weight:800;color:var(--brown2);padding:7px 9px;border-radius:8px;background:var(--cream)}
 
-  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;transition:transform .25s;z-index:20;display:flex;gap:12px;align-items:center}
+  /* setup / login */
+  .center{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+  .box{width:min(560px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px}
+  .box h2{margin:0;font-size:22px}
+  .box p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+  .big{padding:15px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:16px}
+  .big.alt{background:var(--cream);color:var(--ink)}
+  .big:disabled{opacity:.4}
+  .err{color:var(--bad);font-weight:700;font-size:14px;min-height:18px}
+  .staff{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px}
+  .staff button{padding:22px 10px;border-radius:16px;background:#fff;border:2px solid var(--line);font-size:19px;font-weight:800}
+  .adminlink{margin-top:16px;font-weight:800;color:var(--brown2);padding:12px 16px;border-radius:12px;background:var(--cream)}
+
+  /* PIN pad */
+  .pin{position:fixed;inset:0;background:rgba(30,20,12,.55);display:none;align-items:center;justify-content:center;z-index:40;padding:14px}
+  .pin.show{display:flex}
+  .pinbox{background:var(--card);border-radius:22px;padding:18px;width:min(340px,100%);display:flex;flex-direction:column;gap:12px;align-items:center}
+  .pinbox h3{margin:0;font-size:19px;text-align:center}
+  .dots{display:flex;gap:12px;height:20px}
+  .dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--brown2)}
+  .dots i.f{background:var(--brown2)}
+  .pinbox.shake{animation:shake .35s}
+  @keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+  .keys{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:100%}
+  .key{padding:17px 0;border-radius:14px;background:#fff;border:1.5px solid var(--line);font-size:24px;font-weight:800}
+  .key.ok{background:var(--ink);color:#fff;font-size:18px}
+  .pinbox .cancel{font-weight:800;color:var(--muted);padding:6px 14px}
+
+  /* admin */
+  .atabs{flex:none;display:flex;gap:6px;padding:8px 10px;overflow-x:auto}
+  .atabs button{flex:1;padding:11px 12px;border-radius:12px;background:var(--cream);font-weight:800;font-size:14px;white-space:nowrap}
+  .atabs button.on{background:var(--ink);color:#fff}
+  .ascroll{flex:1;min-height:0;overflow-y:auto;padding:4px 10px calc(16px + env(safe-area-inset-bottom))}
+  .apane{display:none;flex-direction:column;gap:12px;max-width:900px;margin:0 auto}
+  .apane.on{display:flex}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+  .card h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+  .filters{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+  .filters .inp{flex:1 1 140px;padding:10px}
+  .chipb{padding:10px 13px;border-radius:10px;background:var(--cream);font-weight:800;font-size:14px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+  .kpi b{display:block;font-size:24px}
+  .kpi span{font-size:12px;color:var(--muted);font-weight:700}
+  .kpi.red{border-color:#e7b3a8;background:#fbecea}
+  .kpi.red b{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .st{font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px;white-space:nowrap}
+  .st.served{background:#e3f0e5;color:var(--ok)} .st.queue{background:#fdf1d8;color:#9a6c0c} .st.deleted{background:#fbe2dd;color:var(--bad)}
+  tr.deleted td{background:#fdf2f0}
+  .muted{color:var(--muted);font-size:13px}
+  .srow2{display:flex;gap:7px;align-items:center;margin-bottom:7px}
+  .srow2 .inp{padding:10px}
+  .mbox textarea{width:100%;min-height:100px;border-radius:12px;border:1.5px solid var(--line);padding:9px;font:600 14px var(--font);background:#fff;color:var(--ink)}
+  .mbox label{font-weight:800;font-size:13px;display:block;margin:10px 0 4px}
+
+  .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(150px);background:var(--ink);color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;transition:transform .25s;z-index:50;display:flex;gap:14px;align-items:center;max-width:94vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{color:#ffcf9c;font-weight:800}
 
-  .modal{position:fixed;inset:0;background:rgba(30,20,12,.5);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
-  .modal.show{display:flex}
-  .mbox{background:var(--card);border-radius:18px;padding:18px;width:min(480px,100%);max-height:90vh;overflow:auto}
-  .mbox h3{margin:0 0 6px}
-  .mbox p{color:var(--muted);font-size:13px;margin:4px 0 10px}
-  .mbox textarea{width:100%;min-height:140px;border-radius:12px;border:1.5px solid var(--line);padding:10px;font:600 14px -apple-system,Roboto,system-ui,sans-serif;background:#fff;color:var(--ink)}
-  .mbox label{font-weight:800;font-size:13px;display:block;margin:12px 0 4px}
-  .mrow{display:flex;gap:8px;margin-top:14px}
-  .mrow button{flex:1;padding:13px;border-radius:12px;font-weight:800}
-  .pri{background:var(--ink);color:#fff}
-  .sec{background:var(--cream)}
-  .danger{background:#f3e6e3;color:var(--bad)}
-
-  @media (max-width:820px){
-    main{grid-template-columns:1fr;padding:10px}
+  @media (max-width:820px), (orientation:portrait) and (max-width:1000px){
+    main{grid-template-columns:1fr;padding-top:8px}
     .tabs{display:flex}
-    body[data-tab="take"] #queuePanel{display:none}
-    body[data-tab="queue"] #takePanel{display:none}
+    #vWork[data-tab="take"] #queuePanel{display:none}
+    #vWork[data-tab="queue"] #takePanel{display:none}
     .stat{display:none}
   }
 </style>
 </head>
-<body data-tab="take">
-<header>
-  <div>
-    <h1>☕ Кофеварня</h1>
-    <div class="sub">очередь заказов</div>
+<body data-view="setup">
+
+<!-- ============ SETUP ============ -->
+<section class="view" id="vSetup">
+  <header><h1>☕ Кофеварня · подключение</h1></header>
+  <div class="center">
+    <div class="box" id="setupStep1">
+      <h2>Подключение к таблице</h2>
+      <p>Вставь адрес веб-приложения Google Apps Script (заканчивается на <b>/exec</b>). Это делается один раз на каждом устройстве.</p>
+      <input class="inp" id="setupUrl" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div class="err" id="setupErr"></div>
+      <button class="big" id="setupConnect">Подключить</button>
+    </div>
+    <div class="box" id="setupStep2" style="display:none">
+      <h2>PIN управляющего</h2>
+      <p>Таблица новая. Придумай PIN управляющего (4–8 цифр). С ним ты будешь заходить в отчёты и настройки меню. Баристам его не говори.</p>
+      <input class="inp" id="newAdmin1" type="password" inputmode="numeric" placeholder="PIN" autocomplete="off">
+      <input class="inp" id="newAdmin2" type="password" inputmode="numeric" placeholder="Повтори PIN" autocomplete="off">
+      <div class="err" id="setupErr2"></div>
+      <button class="big" id="setupCreate">Создать</button>
+    </div>
   </div>
-  <div class="sp"></div>
-  <div class="stat">Выдано сегодня: <b id="stServed">0</b><br>Среднее ожидание: <b id="stAvg">—</b></div>
-  <button class="iconbtn" id="btnSettings" title="Настройки">⚙</button>
-</header>
+</section>
 
-<div class="tabs">
-  <button id="tabTake" class="on">Принять заказ</button>
-  <button id="tabQueue">Очередь <span class="badge" id="qBadge">0</span></button>
-</div>
+<!-- ============ LOGIN ============ -->
+<section class="view" id="vLogin">
+  <header><h1>☕ Кофеварня</h1><div class="sp"></div><div class="sync" id="syncL"><i></i><span></span></div></header>
+  <div class="center">
+    <div class="box">
+      <h2>Кто на смене?</h2>
+      <p id="loginHint">Нажми на своё имя и введи PIN.</p>
+      <div class="staff" id="staffBtns"></div>
+    </div>
+    <button class="adminlink" id="adminLogin">Вход для управляющего</button>
+  </div>
+</section>
 
-<main>
-  <section class="panel" id="takePanel">
-    <div class="sizes">
-      <span class="lbl">Объём</span>
-      <button data-size="250">250</button>
-      <button data-size="350" class="on">350</button>
-      <button data-size="450">450</button>
+<!-- ============ WORK ============ -->
+<section class="view" id="vWork" data-tab="take">
+  <header>
+    <h1 id="workTitle">☕ Кофеварня</h1>
+    <div class="sp"></div>
+    <div class="stat">Выдано: <b id="stServed">0</b> · Ср.: <b id="stAvg">—</b></div>
+    <div class="sync" id="syncW"><i></i><span></span></div>
+    <button class="hbtn" id="endShift">Закрыть смену</button>
+  </header>
+  <div class="tabs">
+    <button id="tabTake" class="on">Принять заказ</button>
+    <button id="tabQueue">Очередь <span class="badge" id="qBadge">0</span></button>
+  </div>
+  <main>
+    <section class="panel" id="takePanel">
+      <div class="screen on" id="scrDrinks">
+        <div class="legend"><span><i style="background:#ecd5bb"></i>Кофе</span><span><i style="background:#fff;border:1px solid #ddd"></i>Не кофе</span><span><i style="background:#e6ead0"></i>Чаи</span></div>
+        <div class="drinks" id="drinks"></div>
+      </div>
+      <div class="screen" id="scrOpts">
+        <div class="opthead"><button class="back" id="back">← Назад</button><div class="optname" id="optName"></div></div>
+        <div class="optbody">
+          <div class="lbl">Объём, мл</div><div class="row sizes" id="sizes"></div>
+          <div class="lbl">Молоко и добавки</div><div class="row mods" id="mods"></div>
+          <div class="lbl">Сиропы</div><div class="row syrs" id="syrs"></div>
+        </div>
+        <button class="addbtn" id="addItem">+ Добавить в заказ</button>
+      </div>
+      <div class="bottom">
+        <div class="draftrow" id="draft"></div>
+        <div class="sendrow">
+          <input class="inp" id="who" placeholder="Имя / примета" autocomplete="off">
+          <button class="send" id="send" disabled>В очередь</button>
+        </div>
+      </div>
+    </section>
+    <section class="panel" id="queuePanel">
+      <div class="qhead">Очередь · сверху самый ранний</div>
+      <div class="qscroll">
+        <div id="queue" style="display:flex;flex-direction:column;gap:9px"></div>
+        <details class="served"><summary>Выданные (<span id="servedCount">0</span>)</summary><div id="served"></div></details>
+      </div>
+    </section>
+  </main>
+</section>
+
+<!-- ============ ADMIN ============ -->
+<section class="view" id="vAdmin">
+  <header><h1>☕ Управляющий</h1><div class="sp"></div><button class="hbtn" id="adminExit">Выйти</button></header>
+  <div class="atabs">
+    <button data-ap="report" class="on">Отчёт</button>
+    <button data-ap="menu">Меню</button>
+    <button data-ap="staff">Сотрудники</button>
+    <button data-ap="more">Ещё</button>
+  </div>
+  <div class="ascroll">
+    <div class="apane on" id="ap-report">
+      <div class="card">
+        <div class="filters">
+          <button class="chipb" id="rToday">Сегодня</button>
+          <button class="chipb" id="rYest">Вчера</button>
+          <input class="inp" type="date" id="rDate">
+          <select class="inp" id="rBarista"><option value="">Все бариста</option></select>
+          <button class="chipb" id="rLoad" style="background:var(--ink);color:#fff">Обновить</button>
+        </div>
+        <div class="err" id="rErr" style="margin-top:6px"></div>
+        <div class="muted">Заказы с планшета приходят, когда там есть интернет. <a id="sheetLink" href="#" target="_blank" rel="noopener" style="display:none;color:var(--brown2);font-weight:800">Открыть Google Таблицу</a></div>
+      </div>
+      <div id="report"></div>
     </div>
 
-    <h2>Кофе</h2>
-    <div class="grid" id="gCoffee"></div>
-    <h2>Не кофе</h2>
-    <div class="grid" id="gOther"></div>
-    <h2>Чаи</h2>
-    <div class="grid" id="gTea"></div>
-
-    <h2>Молоко и добавки</h2>
-    <div class="mods" id="mods"></div>
-    <h2>Сиропы</h2>
-    <div class="mods syr" id="syrups"></div>
-
-    <div class="pending empty" id="pending">
-      <div class="ptxt" id="pendTxt"></div>
-      <div class="pbtns">
-        <button class="pcancel" id="cancelItem" title="Отменить выбор">×</button>
-        <button class="padd" id="addItem" disabled>+ Добавить в заказ</button>
+    <div class="apane mbox" id="ap-menu">
+      <div class="card">
+        <h4>Меню для всех устройств</h4>
+        <div class="muted">По одной позиции в строке. После сохранения планшет подтянет меню, когда будет в сети.</div>
+        <label>Кофе</label><textarea id="edCoffee"></textarea>
+        <label>Не кофе</label><textarea id="edOther" style="min-height:80px"></textarea>
+        <label>Чаи</label><textarea id="edTeas"></textarea>
+        <label>Молоко и добавки (лучше до 6)</label><textarea id="edMods"></textarea>
+        <label>Сиропы (лучше до 8)</label><textarea id="edSyrups"></textarea>
+        <label>Подсветка ожидания, минут: жёлтая / красная</label>
+        <div style="display:flex;gap:8px"><input class="inp" id="edWarn" type="number" min="1"><input class="inp" id="edBad" type="number" min="1"></div>
+        <div class="err" id="menuErr"></div>
+        <button class="big" id="menuSave">Сохранить для всех</button>
       </div>
     </div>
 
-    <h2><span class="grow">Заказ гостя</span><button class="undo" id="clearDraft" style="display:none">очистить</button></h2>
-    <div class="draft empty" id="draft">Нажми на напиток</div>
-    <input class="who" id="who" placeholder="Имя или примета гостя (необязательно)" autocomplete="off">
-    <button class="send" id="send" disabled>В очередь</button>
-  </section>
-
-  <section class="panel" id="queuePanel">
-    <h2><span class="grow">Очередь · сначала самые ранние</span></h2>
-    <div class="queue" id="queue"></div>
-    <details class="served" id="servedBox">
-      <summary>Выданные (<span id="servedCount">0</span>)</summary>
-      <div id="served"></div>
-    </details>
-  </section>
-</main>
-
-<div class="toast" id="toast"><span id="toastText"></span><button id="toastUndo">Отменить</button></div>
-
-<div class="modal" id="modal">
-  <div class="mbox">
-    <h3>Настройки</h3>
-    <p>По одному напитку в строке. Изменения сохранятся на этом устройстве.</p>
-    <label>Кофе</label>
-    <textarea id="edCoffee"></textarea>
-    <label>Не кофе</label>
-    <textarea id="edOther"></textarea>
-    <label>Чаи</label>
-    <textarea id="edTeas"></textarea>
-    <label>Добавки</label>
-    <textarea id="edMods" style="min-height:90px"></textarea>
-    <label>Сиропы</label>
-    <textarea id="edSyrups"></textarea>
-    <label>Подсветка ожидания (минуты): жёлтая / красная</label>
-    <div style="display:flex;gap:8px">
-      <input class="who" id="edWarn" type="number" min="1" style="margin:0">
-      <input class="who" id="edBad" type="number" min="1" style="margin:0">
+    <div class="apane" id="ap-staff">
+      <div class="card">
+        <h4>Бариста</h4>
+        <div class="muted" style="margin-bottom:10px">Имя и PIN из 4 цифр. С ним бариста открывает смену на планшете.</div>
+        <div id="staffList"></div>
+        <button class="chipb" id="staffAdd">+ Добавить бариста</button>
+        <div class="err" id="staffErr"></div>
+        <button class="big" id="staffSave">Сохранить</button>
+      </div>
     </div>
-    <div class="mrow">
-      <button class="sec" id="mCancel">Отмена</button>
-      <button class="pri" id="mSave">Сохранить</button>
-    </div>
-    <div class="mrow">
-      <button class="danger" id="mReset">Новая смена: обнулить очередь и номера</button>
+
+    <div class="apane" id="ap-more">
+      <div class="card" style="display:flex;flex-direction:column;gap:8px">
+        <h4>Сменить PIN управляющего</h4>
+        <input class="inp" id="chPin1" type="password" inputmode="numeric" placeholder="Новый PIN (4–8 цифр)">
+        <input class="inp" id="chPin2" type="password" inputmode="numeric" placeholder="Повтори новый PIN">
+        <div class="err" id="chErr"></div>
+        <button class="big" id="chSave">Сменить PIN</button>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:8px">
+        <h4>Это устройство</h4>
+        <div class="muted" id="devInfo"></div>
+        <button class="big alt" id="resetNums">Обнулить номера заказов на этом устройстве</button>
+        <button class="big alt" id="reconnect">Сменить подключение к таблице</button>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- PIN pad -->
+<div class="pin" id="pin">
+  <div class="pinbox" id="pinbox">
+    <h3 id="pinTitle">PIN</h3>
+    <div class="dots" id="dots"></div>
+    <div class="err" id="pinErr"></div>
+    <div class="keys" id="keys"></div>
+    <button class="cancel" id="pinCancel">Отмена</button>
+  </div>
 </div>
+
+<div class="toast" id="toast"><span id="toastText"></span><button id="toastUndo">Отменить</button></div>
 
 <script>
 (function(){
   const KEY = 'kofevarnya-queue-v1';
-  const MENU_V = 3;
-  const DEFAULTS = {
-    coffee: ['Эспрессо','Американо','Флэт уайт','Капучино','Латте','Раф','Бамбл'],
-    other: ['Горячий шоколад','Какао','Матча латте'],
-    teas: ['Чёрный (Ассам)','Зелёный (Сенча)','Альпийский луг','Облепиха–апельсин','Чёрная смородина','Маракуйя–грейпфрут','Малина–мята','Клюква–лимон'],
-    mods: ['С собой','Кокосовое молоко','Миндальное молоко','Безлактозное молоко','Тёплое молоко','Лимон'],
-    syrups: ['Карамель','Солёная карамель','Ваниль','Лесной орех','Миндаль','Банан','Мята','Лаванда'],
-    warn: 4, bad: 7
+  const SIZES = [250, 350, 450];
+  const DEFAULT_CONFIG = {
+    ver: 0,
+    menu: {
+      coffee: ['Эспрессо','Американо','Флэт уайт','Капучино','Латте','Раф','Бамбл'],
+      other: ['Горячий шоколад','Какао','Матча латте'],
+      teas: ['Чёрный (Ассам)','Зелёный (Сенча)','Альпийский луг','Облепиха–апельсин','Чёрная смородина','Маракуйя–грейпфрут','Малина–мята','Клюква–лимон'],
+      mods: ['Сливки','Кокосовое молоко','Миндальное молоко','Безлактозное молоко','Тёплое молоко','Лимон'],
+      syrups: ['Карамель','Солёная карамель','Ваниль','Лесной орех','Миндаль','Банан','Мята','Лаванда']
+    },
+    staff: [], warn: 4, bad: 7
   };
-  let S = {
-    menu: freshMenu(), menuV: MENU_V,
-    warn: DEFAULTS.warn, bad: DEFAULTS.bad,
-    day: today(), counter: 0, queue: [], served: []
-  };
-  let draft = [], pending = null, size = 350, activeMods = new Set(), lastAction = null;
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const dstr = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const today = () => dstr(new Date());
 
-  function freshMenu(){ return {coffee:[...DEFAULTS.coffee], other:[...DEFAULTS.other], teas:[...DEFAULTS.teas], mods:[...DEFAULTS.mods], syrups:[...DEFAULTS.syrups]}; }
-  function today(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  let S = { url:'', sheetUrl:'', config: clone(DEFAULT_CONFIG), session:null, day: today(), counter:0, queue:[], served:[], deleted:[], outbox:{} };
+  let draft = [], pending = null, size = 350, mods = new Set(), lastAction = null, adminPin = null;
+
   function load(){
-    try{ const raw = localStorage.getItem(KEY); if(raw){ const o = JSON.parse(raw); S = Object.assign(S, o); } }catch(e){}
-    if(S.menuV !== MENU_V){ S.menu = freshMenu(); S.menuV = MENU_V; }
-    if(S.day !== today()){ S.day = today(); S.counter = 0; S.served = []; }
+    try{ const raw = localStorage.getItem(KEY); if(raw){ const o = JSON.parse(raw); if(o.url !== undefined) S = Object.assign(S, o); } }catch(e){}
+    if(!S.outbox) S.outbox = {};
+    if(!S.deleted) S.deleted = [];
+    if(!S.config || !S.config.menu) S.config = clone(DEFAULT_CONFIG);
+    rollDay();
   }
+  function rollDay(){ if(S.day !== today()){ S.day = today(); S.counter = 0; S.served = []; S.deleted = []; save(); } }
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
   const $ = id => document.getElementById(id);
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const hhmm = t => new Date(t).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-  function dur(ms){ const s=Math.max(0,Math.floor(ms/1000)); const m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
-  function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+  const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const hhmm = t => t ? new Date(t).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}) : '';
+  const dur = ms => { const s=Math.max(0,Math.floor(ms/1000)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
+  const buzz = p => { try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} };
+  const M = () => S.config.menu;
+  function show(v){ document.body.dataset.view = v; if(v==='work') requestAnimationFrame(fitGrid); }
 
-  // ---------- Take order ----------
-  function renderMenu(){
-    const mk = (list, cls) => list.map(n => `<button class="drink ${cls} ${pending&&pending.name===n?'sel':''}" data-n="${esc(n)}">${esc(n)}</button>`).join('');
-    $('gCoffee').innerHTML = mk(S.menu.coffee,'coffee');
-    $('gOther').innerHTML = mk(S.menu.other,'');
-    $('gTea').innerHTML = mk(S.menu.teas,'tea');
-    const chip = (m, label) => `<button data-m="${esc(m)}" class="${activeMods.has(m)?'on':''}">${esc(label)}</button>`;
-    $('mods').innerHTML = S.menu.mods.map(m => chip(m, m)).join('');
-    $('syrups').innerHTML = S.menu.syrups.map(m => chip('сироп ' + m.toLowerCase(), m)).join('');
+  // ============ server ============
+  async function api(action, data, url){
+    const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 20000);
+    try{
+      const r = await fetch(url || S.url, {method:'POST', body: JSON.stringify(Object.assign({action}, data||{})), signal: ctrl.signal});
+      const j = await r.json();
+      if(!j.ok) throw new Error(j.error || 'Ошибка сервера');
+      return j;
+    }catch(e){
+      if(e.name === 'AbortError' || e instanceof TypeError) throw new Error('Нет связи с таблицей. Проверь интернет.');
+      throw e;
+    }finally{ clearTimeout(t); }
   }
-  function renderPending(){
-    const box = $('pending');
-    $('send').disabled = !draft.length && !pending;
-    if(!pending){
-      box.className = 'pending empty';
-      $('pendTxt').innerHTML = '1. Выбери напиток &nbsp;→&nbsp; 2. Объём и добавки &nbsp;→&nbsp; 3. Добавить';
-      $('addItem').disabled = true; return;
-    }
-    box.className = 'pending';
-    const mods = [...activeMods];
-    $('pendTxt').innerHTML = `<b>${esc(pending.name)}</b> · ${size} мл${mods.length?`<div class="ptags">${mods.map(esc).join(' · ')}</div>`:'<div class="ptags">без добавок</div>'}`;
-    $('addItem').disabled = false;
-  }
-  function commitPending(){
-    if(!pending) return false;
-    draft.push({name: pending.name, size, mods:[...activeMods]});
-    pending = null; activeMods.clear();
-    renderMenu(); renderPending(); renderDraft(); buzz(15);
-    return true;
-  }
-  $('addItem').onclick = commitPending;
-  $('cancelItem').onclick = () => { pending = null; activeMods.clear(); renderMenu(); renderPending(); };
 
-  function renderDraft(){
-    const d = $('draft');
-    if(!draft.length){ d.className='draft empty'; d.innerHTML='Здесь появятся добавленные напитки'; }
-    else{
-      d.className='draft';
-      d.innerHTML = draft.map((it,i)=>`
-        <div class="ditem">
-          <div class="nm">${esc(it.name)}${it.mods.length?`<div class="tags">${it.mods.map(esc).join(' · ')}</div>`:''}</div>
-          <button class="chip" data-sz="${i}">${it.size}</button>
-          <button class="x" data-rm="${i}">×</button>
-        </div>`).join('');
-    }
-    $('send').disabled = !draft.length && !pending;
-    $('send').textContent = draft.length ? `В очередь · ${draft.length} ${plural(draft.length,'напиток','напитка','напитков')}` : 'В очередь';
-    $('clearDraft').style.display = draft.length ? '' : 'none';
+  // ============ sync of orders ============
+  let flushing = false, syncState = 'ok', flushTimer = null;
+  function markDirty(o){
+    o.v = (o.v||0) + 1;
+    S.outbox[o.id] = clone(o);
+    save(); setSync();
+    clearTimeout(flushTimer); flushTimer = setTimeout(flush, 1200);
   }
-  function plural(n,a,b,c){ const m=n%10, h=n%100; if(m===1&&h!==11) return a; if(m>=2&&m<=4&&(h<12||h>14)) return b; return c; }
+  async function flush(){
+    if(flushing || !S.url) return;
+    const list = Object.values(S.outbox).slice(0, 40);
+    if(!list.length){ syncState = 'ok'; setSync(); return; }
+    flushing = true;
+    try{
+      const r = await api('sync', {orders: list});
+      (r.saved||[]).forEach(s => { const o = S.outbox[s.id]; if(o && o.v === s.v) delete S.outbox[s.id]; });
+      save(); syncState = 'ok';
+      if(Object.keys(S.outbox).length) setTimeout(flush, 300);
+    }catch(e){ syncState = 'off'; }
+    finally{ flushing = false; setSync(); }
+  }
+  function setSync(){
+    const n = Object.keys(S.outbox).length;
+    const cls = n ? (syncState==='off' ? 's-off' : 's-wait') : 's-ok';
+    const txt = n ? (syncState==='off' ? `нет сети · ${n} не отпр.` : `отправка ${n}`) : 'в таблице';
+    ['syncW','syncL'].forEach(id => { const el = $(id); if(el){ el.className = 'sync '+cls; el.querySelector('span').textContent = txt; } });
+  }
+  setInterval(flush, 15000);
+  window.addEventListener('online', flush);
 
-  document.addEventListener('click', e => {
-    const dr = e.target.closest('.drink');
-    if(dr){
-      pending = (pending && pending.name === dr.dataset.n) ? null : {name: dr.dataset.n};
-      if(!pending) activeMods.clear();
-      buzz(10); renderMenu(); renderPending(); return;
-    }
-    const md = e.target.closest('#mods button, #syrups button');
-    if(md){ const m = md.dataset.m; activeMods.has(m)?activeMods.delete(m):activeMods.add(m); md.classList.toggle('on'); renderPending(); return; }
-    const sz = e.target.closest('[data-sz]');
-    if(sz){ const it = draft[+sz.dataset.sz]; it.size = it.size===250?350:it.size===350?450:250; renderDraft(); return; }
-    const rm = e.target.closest('[data-rm]');
-    if(rm){ draft.splice(+rm.dataset.rm,1); renderDraft(); return; }
-    const sb = e.target.closest('.sizes button');
-    if(sb){ size = +sb.dataset.size; document.querySelectorAll('.sizes button').forEach(b=>b.classList.toggle('on', b===sb)); renderPending(); return; }
-  });
-  $('clearDraft').onclick = () => { draft = []; renderDraft(); };
+  async function pullConfig(){
+    if(!S.url) return;
+    try{
+      const r = await api('config');
+      if(r.config && r.config.ver !== S.config.ver){ S.config = r.config; save(); renderDrinks(); renderStaff(); renderQueue(); }
+    }catch(e){}
+  }
+  setInterval(pullConfig, 180000);
 
-  $('send').onclick = () => {
-    commitPending();
-    if(!draft.length) return;
-    S.counter += 1;
-    const order = { id: Date.now()+Math.random(), num: S.counter, at: Date.now(), who: $('who').value.trim(),
-      items: draft.map(d => ({...d, done:false})) };
-    S.queue.push(order);
-    draft = []; $('who').value = '';
-    save(); renderDraft(); renderQueue();
-    buzz([20,40,20]);
-    toast(`Заказ №${order.num} в очереди`, null);
+  // ============ setup ============
+  $('setupConnect').onclick = async () => {
+    const url = $('setupUrl').value.trim();
+    $('setupErr').textContent = '';
+    if(!/^https:\/\/script\.google\.com\/.+\/exec$/.test(url)){ $('setupErr').textContent = 'Адрес должен начинаться с https://script.google.com/ и заканчиваться на /exec'; return; }
+    $('setupConnect').disabled = true; $('setupConnect').textContent = 'Подключаю…';
+    try{
+      const r = await api('ping', {}, url);
+      S.url = url; S.sheetUrl = r.sheetUrl || ''; save();
+      if(!r.hasAdmin){ $('setupStep1').style.display='none'; $('setupStep2').style.display=''; }
+      else { await pullConfig(); renderStaff(); show('login'); }
+    }catch(e){ $('setupErr').textContent = e.message; }
+    finally{ $('setupConnect').disabled = false; $('setupConnect').textContent = 'Подключить'; }
+  };
+  $('setupCreate').onclick = async () => {
+    const a = $('newAdmin1').value.trim(), b = $('newAdmin2').value.trim();
+    $('setupErr2').textContent = '';
+    if(!/^\d{4,8}$/.test(a)) return $('setupErr2').textContent = 'PIN — от 4 до 8 цифр';
+    if(a !== b) return $('setupErr2').textContent = 'PIN не совпадают';
+    try{
+      const cfg = clone(DEFAULT_CONFIG); cfg.ver = Date.now();
+      const r = await api('createAdmin', {pin: a, config: cfg});
+      S.config = r.config || cfg; save(); adminPin = a;
+      openAdmin('staff'); toast('Готово! Теперь добавь бариста', false);
+    }catch(e){ $('setupErr2').textContent = e.message; }
   };
 
-  // ---------- Queue ----------
+  // ============ PIN pad ============
+  let pinCb = null, pinVal = '', pinLen = 0;
+  function askPin(title, len, cb){
+    pinCb = cb; pinVal = ''; pinLen = len;
+    $('pinTitle').textContent = title; $('pinErr').textContent = '';
+    drawDots(); $('pin').classList.add('show');
+  }
+  function drawDots(){
+    const n = pinLen || Math.max(4, pinVal.length);
+    $('dots').innerHTML = Array.from({length:n}, (_,i)=>`<i class="${i<pinVal.length?'f':''}"></i>`).join('');
+  }
+  $('keys').innerHTML = ['1','2','3','4','5','6','7','8','9','⌫','0','OK'].map(k=>`<button class="key ${k==='OK'?'ok':''}" data-k="${k}">${k}</button>`).join('');
+  $('keys').addEventListener('click', e => {
+    const k = e.target.closest('[data-k]'); if(!k) return; buzz(8);
+    const v = k.dataset.k;
+    if(v==='⌫') pinVal = pinVal.slice(0,-1);
+    else if(v==='OK') return submitPin();
+    else if(pinVal.length < 8) pinVal += v;
+    $('pinErr').textContent = ''; drawDots();
+    if(pinLen && pinVal.length === pinLen) submitPin();
+  });
+  async function submitPin(){
+    if(!pinCb || !pinVal) return;
+    const res = await pinCb(pinVal);
+    if(res === true){ $('pin').classList.remove('show'); pinCb = null; }
+    else { $('pinErr').textContent = res || 'Неверный PIN'; pinVal=''; drawDots(); const b=$('pinbox'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); buzz([40,40,40]); }
+  }
+  $('pinCancel').onclick = () => { $('pin').classList.remove('show'); pinCb = null; };
+
+  // ============ login ============
+  function renderStaff(){
+    const st = S.config.staff || [];
+    $('staffBtns').innerHTML = st.map((p,i)=>`<button data-st="${i}">${esc(p.name)}</button>`).join('');
+    $('loginHint').textContent = st.length ? 'Нажми на своё имя и введи PIN.' : 'Пока нет ни одного бариста — управляющий добавляет их в разделе «Сотрудники».';
+  }
+  $('staffBtns').addEventListener('click', e => {
+    const b = e.target.closest('[data-st]'); if(!b) return;
+    const p = S.config.staff[+b.dataset.st];
+    askPin(p.name + ', введи PIN', String(p.pin).length, pin => {
+      if(pin !== String(p.pin)) return 'Неверный PIN';
+      S.session = {name: p.name, since: Date.now()}; save(); startWork(); return true;
+    });
+  });
+  $('adminLogin').onclick = () => askPin('PIN управляющего', 0, async pin => {
+    try{ const r = await api('checkAdmin', {pin}); adminPin = pin; if(r.config){ S.config = r.config; } if(r.sheetUrl) S.sheetUrl = r.sheetUrl; save(); openAdmin('report'); return true; }
+    catch(e){ return e.message; }
+  });
+
+  // ============ work ============
+  function startWork(){
+    $('workTitle').textContent = '☕ ' + S.session.name;
+    renderDrinks(); renderDraft(); renderQueue(); show('work'); flush(); pullConfig();
+  }
+  let endArmed = false;
+  $('endShift').onclick = () => {
+    const b = $('endShift');
+    if(!endArmed){ endArmed = true; b.textContent = 'Точно закрыть?'; b.style.background = 'var(--bad)'; setTimeout(()=>{ endArmed=false; b.textContent='Закрыть смену'; b.style.background=''; }, 3000); return; }
+    endArmed = false; b.textContent='Закрыть смену'; b.style.background='';
+    S.session = null; draft = []; pending = null; save(); flush(); renderStaff(); show('login');
+  };
+
+  const allDrinks = () => [...M().coffee.map(n=>[n,'c-coffee']), ...M().other.map(n=>[n,'c-other']), ...M().teas.map(n=>[n,'c-tea'])];
+  function renderDrinks(){ $('drinks').innerHTML = allDrinks().map(([n,c]) => `<button class="drink ${c}" data-n="${esc(n)}">${esc(n)}</button>`).join(''); fitGrid(); }
+  function fitGrid(){
+    const box = $('drinks'), n = allDrinks().length;
+    const w = box.clientWidth, h = box.clientHeight; if(!w || !h) return;
+    let best = 3, bestScore = -1;
+    for(let c=2;c<=6;c++){ const r = Math.ceil(n/c), score = Math.min(w/c, (h/r)*1.6); if(score > bestScore){ bestScore = score; best = c; } }
+    box.style.setProperty('--cols', best);
+  }
+  window.addEventListener('resize', fitGrid);
+
+  function openOpts(name){ pending = name; mods.clear(); $('optName').textContent = name; renderOpts(); $('scrDrinks').classList.remove('on'); $('scrOpts').classList.add('on'); updateSend(); buzz(10); }
+  function closeOpts(){ pending = null; mods.clear(); $('scrOpts').classList.remove('on'); $('scrDrinks').classList.add('on'); fitGrid(); updateSend(); }
+  function renderOpts(){
+    $('sizes').innerHTML = SIZES.map(s => `<button class="opt ${s===size?'on':''}" data-size="${s}">${s}</button>`).join('');
+    const chip = (key,label) => `<button class="opt ${mods.has(key)?'on':''}" data-m="${esc(key)}">${esc(label)}</button>`;
+    $('mods').innerHTML = M().mods.map(m => chip(m,m)).join('');
+    $('syrs').innerHTML = M().syrups.map(m => chip('сироп '+m.toLowerCase(), m)).join('');
+    $('mods').style.gridTemplateColumns = `repeat(${Math.min(3, Math.max(1,M().mods.length))},1fr)`;
+    $('syrs').style.gridTemplateColumns = `repeat(${Math.min(4, Math.max(1,M().syrups.length))},1fr)`;
+  }
+  function commitPending(){ if(!pending) return false; draft.push({name: pending, size, mods:[...mods]}); closeOpts(); renderDraft(); buzz(15); return true; }
+  function renderDraft(){
+    const d = $('draft');
+    d.innerHTML = draft.length ? draft.map((it,i)=>`<div class="dchip">${esc(it.name)} <small>${it.size}${it.mods.length?' · '+it.mods.length+' доб.':''}</small><button class="x" data-rm="${i}">×</button></div>`).join('') : '<span class="dempty">Заказ пуст — выбери напиток</span>';
+    d.scrollLeft = d.scrollWidth; updateSend();
+  }
+  function updateSend(){ const n = draft.length + (pending?1:0); $('send').disabled = !n; $('send').textContent = n ? `В очередь · ${n}` : 'В очередь'; }
+
+  $('vWork').addEventListener('click', e => {
+    const t = e.target.closest('button'); if(!t) return;
+    if(t.classList.contains('drink')) return openOpts(t.dataset.n);
+    if(t.dataset.size){ size = +t.dataset.size; renderOpts(); return; }
+    if(t.dataset.m){ const m=t.dataset.m; mods.has(m)?mods.delete(m):mods.add(m); t.classList.toggle('on'); buzz(8); return; }
+    if(t.dataset.rm){ draft.splice(+t.dataset.rm,1); renderDraft(); return; }
+  });
+  $('back').onclick = closeOpts;
+  $('addItem').onclick = commitPending;
+  $('send').onclick = () => {
+    commitPending(); if(!draft.length) return;
+    rollDay(); S.counter += 1;
+    const order = { id: Date.now()+'-'+Math.random().toString(36).slice(2,7), date: S.day, num: S.counter, at: Date.now(),
+      barista: S.session ? S.session.name : '', who: $('who').value.trim(), status:'queue', items: draft.map(d => ({...d, done:false})) };
+    S.queue.push(order); draft = []; $('who').value = ''; $('who').blur();
+    markDirty(order); renderDraft(); renderQueue(); buzz([20,40,20]); toast(`Заказ №${order.num} в очереди`, false);
+  };
+
   function renderQueue(){
-    const q = $('queue');
     $('qBadge').textContent = S.queue.length;
-    if(!S.queue.length){ q.innerHTML = '<div class="emptyq"><div>☕</div>Очередь пустая</div>'; }
-    else q.innerHTML = S.queue.map((o,idx) => `
-      <div class="order ${idx===0?'first':''}" data-o="${o.id}">
-        <div class="ohead">
-          <span class="num">№${o.num}</span>
-          ${idx===0?'<span class="next">СЛЕДУЮЩИЙ</span>':''}
-          <span class="otime">принят в ${hhmm(o.at)}</span>
-          <span class="wait" data-at="${o.at}">${dur(Date.now()-o.at)}</span>
-        </div>
+    $('queue').innerHTML = !S.queue.length ? '<div class="emptyq"><div>☕</div>Очередь пустая</div>' :
+      S.queue.map((o,idx) => `
+      <div class="order ${idx===0?'first':''}">
+        <div class="ohead"><span class="num">№${o.num}</span>${idx===0?'<span class="next">СЛЕДУЮЩИЙ</span>':''}
+          <span class="otime">${hhmm(o.at)}${o.barista?' · '+esc(o.barista):''}</span><span class="wait" data-at="${o.at}">${dur(Date.now()-o.at)}</span></div>
         ${o.who?`<div class="owho">${esc(o.who)}</div>`:''}
-        <div class="items">
-          ${o.items.map((it,i)=>`
-            <button class="it ${it.done?'done':''}" data-tick="${o.id}|${i}">
-              <span class="box">${it.done?'✓':''}</span>
-              <span>${esc(it.name)}${it.mods.length?` <span class="tg">${it.mods.map(esc).join(' · ')}</span>`:''}</span>
-              <span class="sz">${it.size} мл</span>
-            </button>`).join('')}
-        </div>
-        <div class="oact">
-          <button class="give" data-give="${o.id}">Выдан ✓</button>
-          <button class="del" data-del="${o.id}">Удалить</button>
-        </div>
+        <div class="items">${o.items.map((it,i)=>`
+          <button class="it ${it.done?'done':''}" data-tick="${o.id}|${i}"><span class="box">${it.done?'✓':''}</span>
+            <span class="nm">${esc(it.name)}${it.mods.length?`<span class="tg">${it.mods.map(esc).join(' · ')}</span>`:''}</span><span class="sz">${it.size} мл</span></button>`).join('')}</div>
+        <div class="oact"><button class="give" data-give="${o.id}">Выдан ✓</button><button class="del" data-del="${o.id}">Удалить</button></div>
       </div>`).join('');
     renderServed(); tick();
   }
   function renderServed(){
     $('servedCount').textContent = S.served.length;
     $('served').innerHTML = S.served.slice().reverse().slice(0,40).map(o => `
-      <div class="srow">
-        <span class="s1">№${o.num}</span>
-        <span class="s2">${o.items.map(i=>esc(i.name)).join(', ')}${o.who?' — '+esc(o.who):''}<br>${hhmm(o.at)} → ${hhmm(o.doneAt)} · ждал ${dur(o.doneAt-o.at)}</span>
-        <button class="undo" data-back="${o.id}">вернуть</button>
-      </div>`).join('') || '<div class="srow"><span class="s2">Пока никого</span></div>';
+      <div class="srow"><span class="s1">№${o.num}</span><span class="s2">${o.items.map(i=>esc(i.name)).join(', ')}${o.who?' — '+esc(o.who):''}<br>${hhmm(o.at)} → ${hhmm(o.doneAt)} · ждал ${dur(o.doneAt-o.at)}</span>
+        <button class="undo" data-back="${o.id}">вернуть</button></div>`).join('') || '<div class="srow"><span class="s2">Пока никого</span></div>';
     $('stServed').textContent = S.served.length;
-    if(S.served.length){
-      const avg = S.served.reduce((a,o)=>a+(o.doneAt-o.at),0)/S.served.length;
-      $('stAvg').textContent = dur(avg);
-    } else $('stAvg').textContent = '—';
+    $('stAvg').textContent = S.served.length ? dur(S.served.reduce((a,o)=>a+(o.doneAt-o.at),0)/S.served.length) : '—';
   }
   function tick(){
     const now = Date.now();
-    document.querySelectorAll('.wait').forEach(w => {
+    document.querySelectorAll('.order .wait').forEach(w => {
       const ms = now - (+w.dataset.at); w.textContent = dur(ms);
-      const card = w.closest('.order'); const m = ms/60000;
-      card.classList.toggle('bad', m >= S.bad);
-      card.classList.toggle('warn', m >= S.warn && m < S.bad);
+      const card = w.closest('.order'), m = ms/60000;
+      card.classList.toggle('bad', m >= S.config.bad); card.classList.toggle('warn', m >= S.config.warn && m < S.config.bad);
     });
   }
   setInterval(tick, 1000);
@@ -403,97 +613,179 @@
   const findQ = id => S.queue.findIndex(o => String(o.id)===id);
   $('queue').addEventListener('click', e => {
     const t = e.target.closest('[data-tick]');
-    if(t){
-      const [id,i] = t.dataset.tick.split('|'); const o = S.queue[findQ(id)];
-      if(o){ o.items[+i].done = !o.items[+i].done; buzz(10); save(); renderQueue(); }
-      return;
-    }
+    if(t){ const [id,i] = t.dataset.tick.split('|'); const o = S.queue[findQ(id)]; if(o){ o.items[+i].done = !o.items[+i].done; buzz(10); save(); renderQueue(); } return; }
     const g = e.target.closest('[data-give]');
-    if(g){
-      const k = findQ(g.dataset.give); if(k<0) return;
-      const [o] = S.queue.splice(k,1); o.doneAt = Date.now(); S.served.push(o);
-      lastAction = {type:'give', order:o, index:k};
-      save(); renderQueue(); buzz(25); toast(`№${o.num} выдан`, true); return;
-    }
+    if(g){ const k = findQ(g.dataset.give); if(k<0) return; const [o] = S.queue.splice(k,1); o.doneAt = Date.now(); o.status='served'; S.served.push(o);
+      lastAction = {type:'give', order:o}; markDirty(o); renderQueue(); buzz(25); toast(`№${o.num} выдан`, true); return; }
     const d = e.target.closest('[data-del]');
     if(d){
-      const k = findQ(d.dataset.del); if(k<0) return;
-      const [o] = S.queue.splice(k,1);
-      lastAction = {type:'del', order:o, index:k};
-      save(); renderQueue(); toast(`№${o.num} удалён`, true); return;
+      if(!d.classList.contains('armed')){ d.classList.add('armed'); d.textContent='Точно?'; setTimeout(()=>{ if(d.isConnected){ d.classList.remove('armed'); d.textContent='Удалить'; } },3000); return; }
+      const k = findQ(d.dataset.del); if(k<0) return; const [o] = S.queue.splice(k,1);
+      o.status='deleted'; o.deletedAt = Date.now(); o.deletedBy = S.session ? S.session.name : ''; S.deleted.push(o);
+      lastAction = {type:'del', order:o}; markDirty(o); renderQueue(); toast(`№${o.num} удалён`, true);
     }
   });
   $('served').addEventListener('click', e => {
     const b = e.target.closest('[data-back]'); if(!b) return;
     const k = S.served.findIndex(o => String(o.id)===b.dataset.back); if(k<0) return;
-    const [o] = S.served.splice(k,1); delete o.doneAt;
-    insertByTime(o); save(); renderQueue();
+    const [o] = S.served.splice(k,1); delete o.doneAt; o.status='queue'; insertByTime(o); markDirty(o); renderQueue();
   });
-  function insertByTime(o){
-    const k = S.queue.findIndex(x => x.at > o.at);
-    k<0 ? S.queue.push(o) : S.queue.splice(k,0,o);
-  }
+  function insertByTime(o){ const k = S.queue.findIndex(x => x.at > o.at); k<0 ? S.queue.push(o) : S.queue.splice(k,0,o); }
 
-  // ---------- Toast / undo ----------
   let tt;
-  function toast(text, undo){
-    $('toastText').textContent = text;
-    $('toastUndo').style.display = undo ? '' : 'none';
-    $('toast').classList.add('show');
-    clearTimeout(tt); tt = setTimeout(()=>$('toast').classList.remove('show'), 3500);
-  }
+  function toast(text, undo){ $('toastText').textContent = text; $('toastUndo').style.display = undo ? '' : 'none'; $('toast').classList.add('show'); clearTimeout(tt); tt = setTimeout(()=>$('toast').classList.remove('show'), 3500); }
   $('toastUndo').onclick = () => {
-    if(!lastAction) return;
-    const {type, order} = lastAction;
-    if(type==='give'){ const k = S.served.indexOf(order); if(k>=0) S.served.splice(k,1); delete order.doneAt; }
-    insertByTime(order); lastAction = null;
-    save(); renderQueue(); $('toast').classList.remove('show');
+    if(!lastAction) return; const {type, order} = lastAction;
+    const list = type==='give' ? S.served : S.deleted; const k = list.indexOf(order); if(k>=0) list.splice(k,1);
+    delete order.doneAt; delete order.deletedAt; delete order.deletedBy; order.status='queue';
+    insertByTime(order); lastAction = null; markDirty(order); renderQueue(); $('toast').classList.remove('show');
   };
-
-  // ---------- Tabs ----------
-  function setTab(t){ document.body.dataset.tab = t; $('tabTake').classList.toggle('on',t==='take'); $('tabQueue').classList.toggle('on',t==='queue'); }
+  function setTab(t){ $('vWork').dataset.tab = t; $('tabTake').classList.toggle('on',t==='take'); $('tabQueue').classList.toggle('on',t==='queue'); if(t==='take') fitGrid(); }
   $('tabTake').onclick = () => setTab('take');
   $('tabQueue').onclick = () => setTab('queue');
 
-  // ---------- Settings ----------
-  $('btnSettings').onclick = () => {
-    $('edCoffee').value = S.menu.coffee.join('\n');
-    $('edOther').value = S.menu.other.join('\n');
-    $('edMods').value = S.menu.mods.join('\n');
-    $('edTeas').value = S.menu.teas.join('\n');
-    $('edSyrups').value = S.menu.syrups.join('\n');
-    $('edWarn').value = S.warn; $('edBad').value = S.bad;
-    $('modal').classList.add('show');
-  };
-  $('mCancel').onclick = () => $('modal').classList.remove('show');
+  // ============ admin ============
+  function openAdmin(pane){
+    show('admin'); fillMenu(); fillStaff();
+    $('devInfo').innerHTML = `Подключено к таблице. Номер последнего заказа сегодня на этом устройстве: <b>${S.counter}</b>.`;
+    if(S.sheetUrl){ $('sheetLink').href = S.sheetUrl; $('sheetLink').style.display=''; }
+    setPane(pane || 'report');
+    if((pane||'report')==='report'){ $('rDate').value = today(); loadReport(); }
+  }
+  function setPane(p){
+    document.querySelectorAll('.atabs button').forEach(b => b.classList.toggle('on', b.dataset.ap===p));
+    document.querySelectorAll('.apane').forEach(el => el.classList.toggle('on', el.id==='ap-'+p));
+  }
+  document.querySelector('.atabs').addEventListener('click', e => { const b = e.target.closest('[data-ap]'); if(b){ setPane(b.dataset.ap); if(b.dataset.ap==='report' && !$('rDate').value){ $('rDate').value = today(); loadReport(); } } });
+  $('adminExit').onclick = () => { adminPin = null; renderStaff(); show(S.session ? 'work' : 'login'); if(S.session) startWork(); };
+
+  // --- report ---
+  let repOrders = [];
+  $('rToday').onclick = () => { $('rDate').value = today(); loadReport(); };
+  $('rYest').onclick = () => { const d = new Date(); d.setDate(d.getDate()-1); $('rDate').value = dstr(d); loadReport(); };
+  $('rDate').onchange = loadReport; $('rLoad').onclick = loadReport;
+  $('rBarista').onchange = drawReport;
+  async function loadReport(){
+    const day = $('rDate').value || today();
+    $('rErr').textContent = ''; $('report').innerHTML = '<div class="card muted">Загружаю…</div>';
+    try{ const r = await api('report', {pin: adminPin, from: day, to: day}); repOrders = r.orders || []; }
+    catch(e){ $('rErr').textContent = e.message; repOrders = []; }
+    const names = [...new Set([...(S.config.staff||[]).map(s=>s.name), ...repOrders.map(o=>o.barista).filter(Boolean)])];
+    const cur = $('rBarista').value;
+    $('rBarista').innerHTML = '<option value="">Все бариста</option>' + names.map(n=>`<option ${n===cur?'selected':''}>${esc(n)}</option>`).join('');
+    drawReport();
+  }
+  function drawReport(){
+    const who = $('rBarista').value;
+    const os = repOrders.filter(o => !who || o.barista === who).sort((a,b)=>a.at-b.at);
+    const served = os.filter(o=>o.status==='served'), queued = os.filter(o=>o.status==='queue'), del = os.filter(o=>o.status==='deleted');
+    const live = os.filter(o=>o.status!=='deleted');
+    const drinksN = live.reduce((a,o)=>a+o.items.length,0);
+    const waits = served.map(o=>o.doneAt-o.at);
+    const avg = waits.length ? waits.reduce((a,b)=>a+b,0)/waits.length : 0, max = waits.length ? Math.max(...waits) : 0;
+    const byDrink = {}, byMod = {}, byBar = {};
+    live.forEach(o => o.items.forEach(it => { const d = byDrink[it.name] = byDrink[it.name] || {250:0,350:0,450:0,t:0}; d[it.size] = (d[it.size]||0)+1; d.t++; it.mods.forEach(m => byMod[m]=(byMod[m]||0)+1); }));
+    os.forEach(o => { const b = byBar[o.barista||'—'] = byBar[o.barista||'—'] || {o:0,d:0,del:0,w:[]}; if(o.status==='deleted') b.del++; else { b.o++; b.d+=o.items.length; } if(o.status==='served') b.w.push(o.doneAt-o.at); });
+    const itemsTxt = o => o.items.map(it=>`${esc(it.name)} ${it.size}${it.mods.length?` <span class="tg" style="display:inline">${it.mods.map(esc).join(', ')}</span>`:''}`).join('<br>');
+    const ST = {served:'выдан', queue:'в очереди', deleted:'удалён'};
+    if(!os.length){ $('report').innerHTML = '<div class="card muted">За этот день заказов нет.</div>'; return; }
+    $('report').innerHTML = `
+      <div class="kpis">
+        <div class="kpi"><b>${served.length}</b><span>выдано заказов</span></div>
+        <div class="kpi"><b>${drinksN}</b><span>напитков</span></div>
+        <div class="kpi"><b>${queued.length}</b><span>в очереди сейчас</span></div>
+        <div class="kpi ${del.length?'red':''}"><b>${del.length}</b><span>удалено</span></div>
+        <div class="kpi"><b>${waits.length?dur(avg):'—'}</b><span>ср. ожидание</span></div>
+        <div class="kpi"><b>${waits.length?dur(max):'—'}</b><span>макс. ожидание</span></div>
+      </div>
+      ${del.length?`<div class="card" style="border-color:#e7b3a8"><h4 style="color:var(--bad)">Удалённые заказы</h4><table><tr><th>№</th><th>Принят</th><th>Удалён</th><th>Кто</th><th>Напитки</th></tr>
+        ${del.map(o=>`<tr class="deleted"><td>${o.num}</td><td>${hhmm(o.at)}</td><td>${hhmm(o.deletedAt)}</td><td>${esc(o.deletedBy||o.barista)}</td><td>${itemsTxt(o)}</td></tr>`).join('')}</table></div>`:''}
+      <div class="card"><h4>По бариста</h4><table><tr><th>Бариста</th><th class="n">Заказов</th><th class="n">Напитков</th><th class="n">Удалено</th><th class="n">Ср. ожид.</th></tr>
+        ${Object.entries(byBar).map(([n,b])=>`<tr><td>${esc(n)}</td><td class="n">${b.o}</td><td class="n">${b.d}</td><td class="n" style="${b.del?'color:var(--bad);font-weight:800':''}">${b.del}</td><td class="n">${b.w.length?dur(b.w.reduce((a,c)=>a+c,0)/b.w.length):'—'}</td></tr>`).join('')}</table></div>
+      <div class="card"><h4>По напиткам</h4><table><tr><th>Напиток</th><th class="n">250</th><th class="n">350</th><th class="n">450</th><th class="n">Всего</th></tr>
+        ${Object.entries(byDrink).sort((a,b)=>b[1].t-a[1].t).map(([n,d])=>`<tr><td>${esc(n)}</td><td class="n">${d[250]||''}</td><td class="n">${d[350]||''}</td><td class="n">${d[450]||''}</td><td class="n"><b>${d.t}</b></td></tr>`).join('')}</table></div>
+      ${Object.keys(byMod).length?`<div class="card"><h4>Добавки и сиропы</h4><table><tr><th>Добавка</th><th class="n">Раз</th></tr>
+        ${Object.entries(byMod).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<tr><td>${esc(n)}</td><td class="n">${c}</td></tr>`).join('')}</table></div>`:''}
+      <div class="card"><h4>Все заказы</h4><table><tr><th>№</th><th>Время</th><th>Бариста</th><th>Напитки</th><th>Статус</th><th class="n">Ждал</th></tr>
+        ${os.map(o=>`<tr class="${o.status==='deleted'?'deleted':''}"><td>${o.num}</td><td>${hhmm(o.at)}</td><td>${esc(o.barista)}${o.who?`<div class="muted">${esc(o.who)}</div>`:''}</td><td>${itemsTxt(o)}</td><td><span class="st ${o.status}">${ST[o.status]||o.status}</span></td><td class="n">${o.doneAt?dur(o.doneAt-o.at):''}</td></tr>`).join('')}</table></div>`;
+  }
+
+  // --- menu ---
+  function fillMenu(){
+    $('edCoffee').value = M().coffee.join('\n'); $('edOther').value = M().other.join('\n'); $('edTeas').value = M().teas.join('\n');
+    $('edMods').value = M().mods.join('\n'); $('edSyrups').value = M().syrups.join('\n');
+    $('edWarn').value = S.config.warn; $('edBad').value = S.config.bad; $('menuErr').textContent='';
+  }
   const lines = v => v.split('\n').map(s=>s.trim()).filter(Boolean);
-  $('mSave').onclick = () => {
-    S.menu.coffee = lines($('edCoffee').value);
-    S.menu.other = lines($('edOther').value);
-    S.menu.mods = lines($('edMods').value);
-    S.menu.teas = lines($('edTeas').value);
-    S.menu.syrups = lines($('edSyrups').value);
-    S.warn = Math.max(1, +$('edWarn').value || DEFAULTS.warn);
-    S.bad = Math.max(S.warn+1, +$('edBad').value || DEFAULTS.bad);
-    save(); renderMenu(); renderQueue(); $('modal').classList.remove('show');
-  };
-  let resetArmed = false;
-  $('mReset').onclick = () => {
-    if(!resetArmed){ resetArmed = true; $('mReset').textContent = 'Точно? Нажми ещё раз'; setTimeout(()=>{resetArmed=false;$('mReset').textContent='Новая смена: обнулить очередь и номера';},3000); return; }
-    S.queue = []; S.served = []; S.counter = 0; S.day = today();
-    save(); renderQueue(); $('modal').classList.remove('show');
-    resetArmed = false; $('mReset').textContent='Новая смена: обнулить очередь и номера';
+  async function saveConfig(cfg, errEl, btn){
+    errEl.textContent = ''; btn.disabled = true;
+    try{ const r = await api('saveConfig', {pin: adminPin, config: cfg}); S.config = r.config; save(); renderDrinks(); renderStaff(); toast('Сохранено', false); return true; }
+    catch(e){ errEl.textContent = e.message; return false; }
+    finally{ btn.disabled = false; }
+  }
+  $('menuSave').onclick = () => {
+    const cfg = clone(S.config);
+    cfg.menu = { coffee: lines($('edCoffee').value), other: lines($('edOther').value), teas: lines($('edTeas').value), mods: lines($('edMods').value), syrups: lines($('edSyrups').value) };
+    cfg.warn = Math.max(1, +$('edWarn').value || 4); cfg.bad = Math.max(cfg.warn+1, +$('edBad').value || 7);
+    saveConfig(cfg, $('menuErr'), $('menuSave'));
   };
 
-  // keep screen awake where allowed
+  // --- staff ---
+  let staffEdit = [];
+  function fillStaff(){ staffEdit = clone(S.config.staff || []); drawStaff(); $('staffErr').textContent=''; }
+  function drawStaff(){
+    $('staffList').innerHTML = staffEdit.length ? staffEdit.map((p,i)=>`<div class="srow2"><input class="inp" data-sn="${i}" value="${esc(p.name)}" placeholder="Имя"><input class="inp" data-sp="${i}" value="${esc(p.pin)}" placeholder="PIN" inputmode="numeric" maxlength="4" style="max-width:100px"><button class="x" data-sx="${i}" style="width:40px;height:40px">×</button></div>`).join('') : '<div class="muted" style="margin-bottom:8px">Пока никого.</div>';
+  }
+  $('staffList').addEventListener('input', e => { const t = e.target; if(t.dataset.sn) staffEdit[+t.dataset.sn].name = t.value; if(t.dataset.sp) staffEdit[+t.dataset.sp].pin = t.value.replace(/\D/g,''); });
+  $('staffList').addEventListener('click', e => { const b = e.target.closest('[data-sx]'); if(b){ staffEdit.splice(+b.dataset.sx,1); drawStaff(); } });
+  $('staffAdd').onclick = () => { staffEdit.push({name:'', pin: String(Math.floor(1000+Math.random()*9000))}); drawStaff(); const ins = $('staffList').querySelectorAll('[data-sn]'); ins[ins.length-1].focus(); };
+  $('staffSave').onclick = () => {
+    const list = staffEdit.map(p=>({name:p.name.trim(), pin:String(p.pin).trim()})).filter(p=>p.name);
+    const names = new Set();
+    for(const p of list){
+      if(!/^\d{4}$/.test(p.pin)) return $('staffErr').textContent = `У «${p.name}» PIN должен быть из 4 цифр`;
+      if(names.has(p.name.toLowerCase())) return $('staffErr').textContent = `Имя «${p.name}» повторяется`;
+      names.add(p.name.toLowerCase());
+    }
+    const cfg = clone(S.config); cfg.staff = list;
+    saveConfig(cfg, $('staffErr'), $('staffSave')).then(ok => { if(ok) fillStaff(); });
+  };
+
+  // --- more ---
+  $('chSave').onclick = async () => {
+    const a = $('chPin1').value.trim(), b = $('chPin2').value.trim(); $('chErr').textContent='';
+    if(!/^\d{4,8}$/.test(a)) return $('chErr').textContent = 'PIN — от 4 до 8 цифр';
+    if(a!==b) return $('chErr').textContent = 'PIN не совпадают';
+    try{ await api('changeAdminPin', {pin: adminPin, newPin: a}); adminPin = a; $('chPin1').value=$('chPin2').value=''; toast('PIN управляющего изменён', false); }
+    catch(e){ $('chErr').textContent = e.message; }
+  };
+  let rnArmed=false;
+  $('resetNums').onclick = () => {
+    const b=$('resetNums');
+    if(!rnArmed){ rnArmed=true; b.textContent='Точно? Очередь на этом устройстве очистится'; setTimeout(()=>{rnArmed=false;b.textContent='Обнулить номера заказов на этом устройстве';},3000); return; }
+    rnArmed=false; b.textContent='Обнулить номера заказов на этом устройстве';
+    S.queue.forEach(o => { o.status='deleted'; o.deletedAt=Date.now(); o.deletedBy='управляющий (сброс)'; markDirty(o); });
+    S.queue=[]; S.counter=0; save(); renderQueue(); toast('Номера обнулены', false); openAdmin('more');
+  };
+  $('reconnect').onclick = () => {
+    if(Object.keys(S.outbox).length && !confirmOnce('reconnect', 'Есть неотправленные заказы. Нажми ещё раз, чтобы всё равно сменить')) return;
+    S.url=''; S.session=null; adminPin=null; save();
+    $('setupStep1').style.display=''; $('setupStep2').style.display='none'; $('setupUrl').value=''; show('setup');
+  };
+  const armedMap = {};
+  function confirmOnce(key, msg){ if(armedMap[key]) { armedMap[key]=false; return true; } armedMap[key]=true; toast(msg,false); setTimeout(()=>armedMap[key]=false, 4000); return false; }
+
   async function wake(){ try{ if('wakeLock' in navigator) await navigator.wakeLock.request('screen'); }catch(e){} }
   document.addEventListener('click', wake, {once:true});
-  document.addEventListener('visibilitychange', () => { if(document.visibilityState==='visible') wake(); });
+  document.addEventListener('visibilitychange', () => { if(document.visibilityState==='visible'){ wake(); rollDay(); flush(); pullConfig(); } });
 
-  load(); renderMenu(); renderPending(); renderDraft(); renderQueue();
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  }
+  // ============ start ============
+  load(); setSync(); renderStaff();
+  if(!S.url) show('setup');
+  else if(S.session) startWork();
+  else { show('login'); pullConfig(); }
+  flush();
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 })();
 </script>
 </body>
