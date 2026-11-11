@@ -479,7 +479,7 @@
         <div class="card" style="display:flex;flex-direction:column;gap:8px">
           <h4>Нейросеть</h4>
           <div id="aiKeyState" class="muted">Проверяю…</div>
-          <input class="inp" id="aiKey" type="password" placeholder="API-ключ Gemini (начинается с AIza…)" autocomplete="off" spellcheck="false">
+          <input class="inp" id="aiKey" type="password" placeholder="API-ключ Gemini (AIza… или AQ.…)" autocomplete="off" spellcheck="false">
           <input class="inp" id="aiModel" placeholder="Модель" autocomplete="off" spellcheck="false">
           <div class="err" id="aiKeyErr"></div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -490,7 +490,7 @@
             <ol class="steps">
               <li>На компьютере открой <b>aistudio.google.com</b> и войди под Google-аккаунтом. Из России сайт открывается только через VPN.</li>
               <li>Слева внизу нажми <b>«Get API key»</b>, потом <b>«Create API key»</b>.</li>
-              <li>Скопируй ключ (начинается с <code>AIza</code>), вставь в поле выше и нажми «Сохранить ключ».</li>
+              <li>Скопируй ключ (начинается с <code>AIza</code> или <code>AQ.</code>), вставь в поле выше и нажми «Сохранить ключ».</li>
             </ol>
             <div class="muted" style="margin-top:6px">VPN нужен только для получения ключа. Дальше запросы идут с серверов Google, где работает твой скрипт, и всё работает без VPN. Ключ хранится в скрипте таблицы, на планшет он не попадает. Бесплатного лимита Google хватает с запасом.</div>
           </details>
@@ -1559,7 +1559,7 @@
   }
   $('aiKeySave').onclick = async () => {
     const key = $('aiKey').value.trim(), model = $('aiModel').value.trim(); $('aiKeyErr').textContent = '';
-    if(key && !/^[\w-]{20,}$/.test(key)) return $('aiKeyErr').textContent = 'Похоже, ключ скопирован не полностью.';
+    if(key && (key.length < 20 || /\s/.test(key))) return $('aiKeyErr').textContent = 'Похоже, ключ скопирован не полностью или с пробелами внутри.';
     $('aiKeySave').disabled = true;
     try{ const r = await api('aiSetKey', {pin: adminPin, key, model}); AI.hasKey = r.hasKey; AI.model = r.model; $('aiKey').value = ''; drawKeyState(); toast('Сохранено', false); }
     catch(e){ $('aiKeyErr').textContent = e.message; }
