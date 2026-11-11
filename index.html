@@ -171,6 +171,40 @@
   .mbox textarea{width:100%;min-height:100px;border-radius:12px;border:1.5px solid var(--line);padding:9px;font:600 14px var(--font);background:#fff;color:var(--ink)}
   .mbox label{font-weight:800;font-size:13px;display:block;margin:10px 0 4px}
 
+  /* write-off */
+  body[data-view="wo"] #vWO{display:flex}
+  .wobody{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;padding:10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));max-width:820px;width:100%;margin:0 auto}
+  .wostep{flex:1;min-height:0;display:none;flex-direction:column;gap:8px}
+  .wostep.on{display:flex}
+  .tiles{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,2),1fr);grid-auto-rows:1fr;gap:8px;max-height:560px}
+  .tile{border-radius:16px;background:#fff;border:2px solid var(--line);font-weight:800;font-size:clamp(14px,2.2vh,19px);line-height:1.15;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+  .tile:active{transform:scale(.96)}
+  .tile .ic{font-size:clamp(22px,4vh,36px)}
+  .tile small{font-size:12px;color:var(--muted);font-weight:700}
+  .wohead{flex:none;display:flex;align-items:center;gap:8px}
+  .wotitle{flex:1;font-size:21px;font-weight:800;line-height:1.1}
+  .qtybox{flex:none;display:flex;align-items:baseline;justify-content:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:8px}
+  .qtybox b{font-size:clamp(30px,6vh,48px);font-variant-numeric:tabular-nums}
+  .qtybox span{font-size:20px;font-weight:800;color:var(--muted)}
+  .wkeys{flex:1.4;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:7px}
+  .wkeys .key{padding:0;font-size:clamp(20px,3.2vh,28px)}
+  .reasons{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:7px}
+  .reasons .opt.on{background:var(--bad);border-color:var(--bad);color:#fff}
+  .wobtn{flex:none;padding:16px;border-radius:14px;background:var(--bad);color:#fff;font-weight:800;font-size:18px}
+  .wobtn:disabled{opacity:.35}
+  .wodone{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+  .wodone .ok{width:90px;height:90px;border-radius:50%;background:var(--ok);color:#fff;font-size:52px;display:flex;align-items:center;justify-content:center}
+  .wodone h2{margin:0;font-size:26px}
+  .wodone p{margin:0;font-size:17px;color:var(--muted);font-weight:700}
+  .wolist{flex:none;max-height:32vh;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 10px}
+  .wolist h4{margin:8px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+  .worow{display:flex;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+  .worow .w1{flex:1}
+  .worow .w1 small{display:block;color:var(--muted);font-weight:600}
+  .worow.cancelled .w1{text-decoration:line-through;opacity:.5}
+  .hbtn.red{background:#e4583f}
+  @media (max-width:520px){ .sync span{display:none} header h1{font-size:15px} .hbtn{padding:8px 9px;font-size:12px} }
+
   .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(150px);background:var(--ink);color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;transition:transform .25s;z-index:50;display:flex;gap:14px;align-items:center;max-width:94vw}
   .toast.show{transform:translateX(-50%) translateY(0)}
   .toast button{color:#ffcf9c;font-weight:800}
@@ -228,6 +262,7 @@
     <div class="sp"></div>
     <div class="stat">Выдано: <b id="stServed">0</b> · Ср.: <b id="stAvg">—</b></div>
     <div class="sync" id="syncW"><i></i><span></span></div>
+    <button class="hbtn red" id="openWO">Списание</button>
     <button class="hbtn" id="endShift">Закрыть смену</button>
   </header>
   <div class="tabs">
@@ -267,6 +302,40 @@
   </main>
 </section>
 
+<!-- ============ WRITE-OFF ============ -->
+<section class="view" id="vWO">
+  <header><button class="hbtn" id="woExit">← К заказам</button><h1 style="margin-left:6px">Списание</h1><div class="sp"></div><div class="sync" id="syncO"><i></i><span></span></div></header>
+  <div class="wobody">
+    <div class="wostep on" id="wo1">
+      <div class="lbl">Что списываем?</div>
+      <div class="tiles" id="woCats"></div>
+      <div class="wolist" id="woToday"></div>
+    </div>
+    <div class="wostep" id="wo2">
+      <div class="wohead"><button class="back" data-wogo="1">← Назад</button><div class="wotitle" id="woCatName"></div></div>
+      <div class="tiles" id="woProds"></div>
+    </div>
+    <div class="wostep" id="wo3">
+      <div class="wohead"><button class="back" data-wogo="2">← Назад</button><div class="wotitle" id="woProdName"></div></div>
+      <div class="qtybox"><b id="woQty">0</b><span id="woUnit"></span></div>
+      <div class="wkeys" id="woKeys"></div>
+      <div class="lbl">Причина</div>
+      <div class="reasons" id="woReasons"></div>
+      <input class="inp" id="woNote" placeholder="Комментарий (необязательно)" autocomplete="off" style="flex:none">
+      <button class="wobtn" id="woSubmit" disabled>Списать</button>
+    </div>
+    <div class="wostep" id="wo4">
+      <div class="wodone">
+        <div class="ok">✓</div>
+        <h2>Списано</h2>
+        <p id="woDoneTxt"></p>
+        <button class="big" id="woMore" style="min-width:240px">Ещё списание</button>
+        <button class="big alt" id="woBack" style="min-width:240px">К заказам</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ADMIN ============ -->
 <section class="view" id="vAdmin">
   <header><h1>☕ Управляющий</h1><div class="sp"></div><button class="hbtn" id="adminExit">Выйти</button></header>
@@ -301,6 +370,9 @@
         <label>Чаи</label><textarea id="edTeas"></textarea>
         <label>Молоко и добавки (лучше до 6)</label><textarea id="edMods"></textarea>
         <label>Сиропы (лучше до 8)</label><textarea id="edSyrups"></textarea>
+        <label>Списания: продукты — по строке «Категория | Продукт | ед.»</label><textarea id="edWo" style="min-height:160px"></textarea>
+        <div class="muted">Категории «Сиропы» и «Напитки» добавляются сами из меню.</div>
+        <label>Причины списания</label><textarea id="edReasons" style="min-height:90px"></textarea>
         <label>Подсветка ожидания, минут: жёлтая / красная</label>
         <div style="display:flex;gap:8px"><input class="inp" id="edWarn" type="number" min="1"><input class="inp" id="edBad" type="number" min="1"></div>
         <div class="err" id="menuErr"></div>
@@ -363,23 +435,32 @@
       mods: ['Сливки','Кокосовое молоко','Миндальное молоко','Безлактозное молоко','Тёплое молоко','Лимон'],
       syrups: ['Карамель','Солёная карамель','Ваниль','Лесной орех','Миндаль','Банан','Мята','Лаванда']
     },
-    staff: [], warn: 4, bad: 7
+    staff: [], warn: 4, bad: 7,
+    woItems: [
+      ['Молочное','Молоко','л'],['Молочное','Сливки','л'],['Молочное','Кокосовое молоко','л'],['Молочное','Миндальное молоко','л'],['Молочное','Безлактозное молоко','л'],
+      ['Кофе и чай','Кофе в зёрнах','кг'],['Кофе и чай','Матча','г'],['Кофе и чай','Чай листовой','г'],
+      ['Пюре и фрукты','Пюре MIXER','мл'],['Пюре и фрукты','Лимон','шт'],['Пюре и фрукты','Мята свежая','г'],
+      ['Выпечка и еда','Выпечка','шт'],['Выпечка и еда','Десерт','шт'],['Выпечка и еда','Сэндвич','шт'],
+      ['Расходники','Стакан 250','шт'],['Расходники','Стакан 350','шт'],['Расходники','Стакан 450','шт'],['Расходники','Крышка','шт']
+    ].map(([cat,name,unit])=>({cat,name,unit})),
+    woReasons: ['Просрочка','Пролито / разбито','Брак / испорчено','Переделка напитка','Угощение / дегустация','Другое']
   };
   const clone = o => JSON.parse(JSON.stringify(o));
   const dstr = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   const today = () => dstr(new Date());
 
-  let S = { url:'', sheetUrl:'', config: clone(DEFAULT_CONFIG), session:null, day: today(), counter:0, queue:[], served:[], deleted:[], outbox:{} };
+  let S = { url:'', sheetUrl:'', config: clone(DEFAULT_CONFIG), session:null, day: today(), counter:0, queue:[], served:[], deleted:[], outbox:{}, wo:[], woOut:{} };
   let draft = [], pending = null, size = 350, mods = new Set(), lastAction = null, adminPin = null;
 
   function load(){
     try{ const raw = localStorage.getItem(KEY); if(raw){ const o = JSON.parse(raw); if(o.url !== undefined) S = Object.assign(S, o); } }catch(e){}
     if(!S.outbox) S.outbox = {};
     if(!S.deleted) S.deleted = [];
+    if(!S.wo) S.wo = []; if(!S.woOut) S.woOut = {};
     if(!S.config || !S.config.menu) S.config = clone(DEFAULT_CONFIG);
     rollDay();
   }
-  function rollDay(){ if(S.day !== today()){ S.day = today(); S.counter = 0; S.served = []; S.deleted = []; save(); } }
+  function rollDay(){ if(S.day !== today()){ S.day = today(); S.counter = 0; S.served = []; S.deleted = []; S.wo = []; save(); } }
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
   const $ = id => document.getElementById(id);
   const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -387,6 +468,8 @@
   const dur = ms => { const s=Math.max(0,Math.floor(ms/1000)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); };
   const buzz = p => { try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} };
   const M = () => S.config.menu;
+  const woItems = () => S.config.woItems || DEFAULT_CONFIG.woItems;
+  const woReasons = () => S.config.woReasons || DEFAULT_CONFIG.woReasons;
   function show(v){ document.body.dataset.view = v; if(v==='work') requestAnimationFrame(fitGrid); }
 
   // ============ server ============
@@ -411,24 +494,30 @@
     save(); setSync();
     clearTimeout(flushTimer); flushTimer = setTimeout(flush, 1200);
   }
+  function markWoDirty(w){
+    w.v = (w.v||0) + 1; S.woOut[w.id] = clone(w); save(); setSync();
+    clearTimeout(flushTimer); flushTimer = setTimeout(flush, 800);
+  }
+  const pendingCount = () => Object.keys(S.outbox).length + Object.keys(S.woOut).length;
   async function flush(){
     if(flushing || !S.url) return;
-    const list = Object.values(S.outbox).slice(0, 40);
-    if(!list.length){ syncState = 'ok'; setSync(); return; }
+    const list = Object.values(S.outbox).slice(0, 40), wl = Object.values(S.woOut).slice(0, 40);
+    if(!list.length && !wl.length){ syncState = 'ok'; setSync(); return; }
     flushing = true;
     try{
-      const r = await api('sync', {orders: list});
+      const r = await api('sync', {orders: list, writeoffs: wl});
       (r.saved||[]).forEach(s => { const o = S.outbox[s.id]; if(o && o.v === s.v) delete S.outbox[s.id]; });
+      (r.savedWo||[]).forEach(s => { const o = S.woOut[s.id]; if(o && o.v === s.v) delete S.woOut[s.id]; });
       save(); syncState = 'ok';
-      if(Object.keys(S.outbox).length) setTimeout(flush, 300);
+      if(pendingCount()) setTimeout(flush, 300);
     }catch(e){ syncState = 'off'; }
     finally{ flushing = false; setSync(); }
   }
   function setSync(){
-    const n = Object.keys(S.outbox).length;
+    const n = pendingCount();
     const cls = n ? (syncState==='off' ? 's-off' : 's-wait') : 's-ok';
     const txt = n ? (syncState==='off' ? `нет сети · ${n} не отпр.` : `отправка ${n}`) : 'в таблице';
-    ['syncW','syncL'].forEach(id => { const el = $(id); if(el){ el.className = 'sync '+cls; el.querySelector('span').textContent = txt; } });
+    ['syncW','syncL','syncO'].forEach(id => { const el = $(id); if(el){ el.className = 'sync '+cls; el.querySelector('span').textContent = txt; } });
   }
   setInterval(flush, 15000);
   window.addEventListener('online', flush);
@@ -437,7 +526,7 @@
     if(!S.url) return;
     try{
       const r = await api('config');
-      if(r.config && r.config.ver !== S.config.ver){ S.config = r.config; save(); renderDrinks(); renderStaff(); renderQueue(); }
+      if(r.config && r.config.ver !== S.config.ver){ S.config = r.config; save(); renderDrinks(); renderStaff(); renderQueue(); renderWoCats(); }
     }catch(e){}
   }
   setInterval(pullConfig, 180000);
@@ -644,6 +733,86 @@
   $('tabTake').onclick = () => setTab('take');
   $('tabQueue').onclick = () => setTab('queue');
 
+  // ============ write-off ============
+  let wo = {cat:null, prod:null, qty:'', reason:null};
+  const CAT_IC = {'Молочное':'🥛','Кофе и чай':'☕','Пюре и фрукты':'🍋','Выпечка и еда':'🥐','Расходники':'🥤','Сиропы':'🍯','Напитки (переделка)':'🔁'};
+  function woCatalog(){
+    const cats = {};
+    woItems().forEach(it => { (cats[it.cat] = cats[it.cat] || []).push({name: it.name, unit: it.unit}); });
+    if(M().syrups.length) cats['Сиропы'] = M().syrups.map(n => ({name: 'Сироп ' + n.toLowerCase(), unit: 'мл'}));
+    const dr = [...M().coffee, ...M().other, ...M().teas];
+    if(dr.length) cats['Напитки (переделка)'] = dr.map(n => ({name: n, unit: 'шт'}));
+    return cats;
+  }
+  function fitTiles(el, n){
+    const w = el.clientWidth, h = el.clientHeight; if(!w || !h) return;
+    let best = 2, bs = -1;
+    for(let c=1;c<=5;c++){ const rr = Math.ceil(n/c), sc = Math.min(w/c, (h/rr)*1.7); if(sc > bs){ bs = sc; best = c; } }
+    el.style.setProperty('--cols', best);
+  }
+  function woStep(n){ ['wo1','wo2','wo3','wo4'].forEach((id,i)=>$(id).classList.toggle('on', i===n-1)); requestAnimationFrame(()=>{ if(n===1) fitTiles($('woCats'), Object.keys(woCatalog()).length); if(n===2) fitTiles($('woProds'), (woCatalog()[wo.cat]||[]).length); }); }
+  function renderWoCats(){
+    const c = woCatalog();
+    $('woCats').innerHTML = Object.entries(c).map(([k,v]) => `<button class="tile" data-wcat="${esc(k)}"><span class="ic">${CAT_IC[k]||'📦'}</span>${esc(k)}<small>${v.length} поз.</small></button>`).join('');
+    renderWoToday();
+  }
+  function fmtQty(q){ return String(q).replace('.', ','); }
+  function renderWoToday(){
+    const list = S.wo.slice().reverse();
+    $('woToday').innerHTML = `<h4>Списано за сегодня (${S.wo.filter(w=>w.status!=='cancelled').length})</h4>` + (list.length ? list.map(w => `
+      <div class="worow ${w.status==='cancelled'?'cancelled':''}"><div class="w1"><b>${esc(w.product)}</b> — ${fmtQty(w.qty)} ${esc(w.unit)}<small>${hhmm(w.at)} · ${esc(w.barista)} · ${esc(w.reason)}${w.note?' · '+esc(w.note):''}</small></div>
+      ${w.status==='cancelled' ? '<span class="muted">отменено</span>' : `<button class="undo" data-wcancel="${w.id}">отменить</button>`}</div>`).join('') : '<div class="muted" style="padding:6px 0 10px">Пока ничего</div>');
+  }
+  function openWO(){ $('toast').classList.remove('show'); wo = {cat:null, prod:null, qty:'', reason:null}; renderWoCats(); show('wo'); woStep(1); }
+  $('openWO').onclick = openWO;
+  $('woExit').onclick = () => show('work');
+  $('woBack').onclick = () => show('work');
+  $('woMore').onclick = openWO;
+  $('woKeys').innerHTML = ['1','2','3','4','5','6','7','8','9',',','0','⌫'].map(k=>`<button class="key" data-wk="${k}">${k}</button>`).join('');
+  function drawQty(){
+    $('woQty').textContent = wo.qty || '0';
+    const q = parseFloat((wo.qty||'').replace(',', '.'));
+    $('woSubmit').disabled = !(q > 0 && wo.reason);
+  }
+  $('vWO').addEventListener('click', e => {
+    const t = e.target.closest('button'); if(!t) return;
+    if(t.dataset.wogo){ woStep(+t.dataset.wogo); return; }
+    if(t.dataset.wcat){
+      wo.cat = t.dataset.wcat; $('woCatName').textContent = wo.cat;
+      $('woProds').innerHTML = woCatalog()[wo.cat].map((p,i) => `<button class="tile" data-wprod="${i}">${esc(p.name)}<small>${esc(p.unit)}</small></button>`).join('');
+      woStep(2); return;
+    }
+    if(t.dataset.wprod){
+      wo.prod = woCatalog()[wo.cat][+t.dataset.wprod]; wo.qty = ''; wo.reason = null; $('woNote').value = '';
+      $('woProdName').textContent = wo.prod.name; $('woUnit').textContent = wo.prod.unit;
+      $('woReasons').innerHTML = woReasons().map(r => `<button class="opt" data-wr="${esc(r)}">${esc(r)}</button>`).join('');
+      drawQty(); woStep(3); return;
+    }
+    if(t.dataset.wk){
+      const k = t.dataset.wk; buzz(8);
+      if(k==='⌫') wo.qty = wo.qty.slice(0,-1);
+      else if(k===','){ if(!wo.qty.includes(',')) wo.qty = (wo.qty||'0') + ','; }
+      else if(wo.qty.length < 7){ wo.qty = (wo.qty==='0' ? '' : wo.qty) + k; }
+      drawQty(); return;
+    }
+    if(t.dataset.wr){ wo.reason = t.dataset.wr; document.querySelectorAll('#woReasons .opt').forEach(b=>b.classList.toggle('on', b===t)); drawQty(); return; }
+    if(t.dataset.wcancel){
+      if(!t.classList.contains('armed')){ t.classList.add('armed'); t.textContent='Точно?'; t.style.background='var(--bad)'; t.style.color='#fff'; setTimeout(()=>{ if(t.isConnected){ t.classList.remove('armed'); t.textContent='отменить'; t.style.background=''; t.style.color=''; } },3000); return; }
+      const w = S.wo.find(x => x.id === t.dataset.wcancel); if(!w) return;
+      w.status = 'cancelled'; w.cancelledAt = Date.now(); markWoDirty(w); renderWoToday(); return;
+    }
+  });
+  $('woSubmit').onclick = () => {
+    const q = parseFloat(wo.qty.replace(',', '.')); if(!(q > 0) || !wo.reason) return;
+    rollDay();
+    const w = { id: 'w' + Date.now() + '-' + Math.random().toString(36).slice(2,6), date: S.day, at: Date.now(), barista: S.session ? S.session.name : '',
+      cat: wo.cat, product: wo.prod.name, qty: q, unit: wo.prod.unit, reason: wo.reason, note: $('woNote').value.trim(), status: 'ok' };
+    S.wo.push(w); markWoDirty(w); buzz([20,40,20]);
+    $('woDoneTxt').textContent = `${w.product} — ${fmtQty(w.qty)} ${w.unit} · ${w.reason}`;
+    woStep(4);
+  };
+  window.addEventListener('resize', () => { if(document.body.dataset.view==='wo'){ fitTiles($('woCats'), Object.keys(woCatalog()).length); if(wo.cat) fitTiles($('woProds'), (woCatalog()[wo.cat]||[]).length); } });
+
   // ============ admin ============
   function openAdmin(pane){
     show('admin'); fillMenu(); fillStaff();
@@ -660,7 +829,7 @@
   $('adminExit').onclick = () => { adminPin = null; renderStaff(); show(S.session ? 'work' : 'login'); if(S.session) startWork(); };
 
   // --- report ---
-  let repOrders = [];
+  let repOrders = [], repWo = [];
   $('rToday').onclick = () => { $('rDate').value = today(); loadReport(); };
   $('rYest').onclick = () => { const d = new Date(); d.setDate(d.getDate()-1); $('rDate').value = dstr(d); loadReport(); };
   $('rDate').onchange = loadReport; $('rLoad').onclick = loadReport;
@@ -668,9 +837,9 @@
   async function loadReport(){
     const day = $('rDate').value || today();
     $('rErr').textContent = ''; $('report').innerHTML = '<div class="card muted">Загружаю…</div>';
-    try{ const r = await api('report', {pin: adminPin, from: day, to: day}); repOrders = r.orders || []; }
-    catch(e){ $('rErr').textContent = e.message; repOrders = []; }
-    const names = [...new Set([...(S.config.staff||[]).map(s=>s.name), ...repOrders.map(o=>o.barista).filter(Boolean)])];
+    try{ const r = await api('report', {pin: adminPin, from: day, to: day}); repOrders = r.orders || []; repWo = r.writeoffs || []; }
+    catch(e){ $('rErr').textContent = e.message; repOrders = []; repWo = []; }
+    const names = [...new Set([...(S.config.staff||[]).map(s=>s.name), ...repOrders.map(o=>o.barista), ...repWo.map(w=>w.barista)].filter(Boolean))];
     const cur = $('rBarista').value;
     $('rBarista').innerHTML = '<option value="">Все бариста</option>' + names.map(n=>`<option ${n===cur?'selected':''}>${esc(n)}</option>`).join('');
     drawReport();
@@ -678,6 +847,7 @@
   function drawReport(){
     const who = $('rBarista').value;
     const os = repOrders.filter(o => !who || o.barista === who).sort((a,b)=>a.at-b.at);
+    const ws = repWo.filter(w => !who || w.barista === who).sort((a,b)=>a.at-b.at), wsOk = ws.filter(w=>w.status!=='cancelled');
     const served = os.filter(o=>o.status==='served'), queued = os.filter(o=>o.status==='queue'), del = os.filter(o=>o.status==='deleted');
     const live = os.filter(o=>o.status!=='deleted');
     const drinksN = live.reduce((a,o)=>a+o.items.length,0);
@@ -686,9 +856,21 @@
     const byDrink = {}, byMod = {}, byBar = {};
     live.forEach(o => o.items.forEach(it => { const d = byDrink[it.name] = byDrink[it.name] || {250:0,350:0,450:0,t:0}; d[it.size] = (d[it.size]||0)+1; d.t++; it.mods.forEach(m => byMod[m]=(byMod[m]||0)+1); }));
     os.forEach(o => { const b = byBar[o.barista||'—'] = byBar[o.barista||'—'] || {o:0,d:0,del:0,w:[]}; if(o.status==='deleted') b.del++; else { b.o++; b.d+=o.items.length; } if(o.status==='served') b.w.push(o.doneAt-o.at); });
+    wsOk.forEach(w => { const b = byBar[w.barista||'—'] = byBar[w.barista||'—'] || {o:0,d:0,del:0,w:[]}; b.wo = (b.wo||0)+1; });
     const itemsTxt = o => o.items.map(it=>`${esc(it.name)} ${it.size}${it.mods.length?` <span class="tg" style="display:inline">${it.mods.map(esc).join(', ')}</span>`:''}`).join('<br>');
     const ST = {served:'выдан', queue:'в очереди', deleted:'удалён'};
-    if(!os.length){ $('report').innerHTML = '<div class="card muted">За этот день заказов нет.</div>'; return; }
+    const woByProd = {}, woByReason = {};
+    wsOk.forEach(w => { const k = w.product+'|'+w.unit; const p = woByProd[k] = woByProd[k] || {name:w.product, unit:w.unit, q:0, n:0}; p.q += +w.qty; p.n++; woByReason[w.reason] = (woByReason[w.reason]||0)+1; });
+    const fq = q => String(Math.round(q*1000)/1000).replace('.', ',');
+    const woHtml = !ws.length ? '' : `
+      <div class="card"><h4>Списания</h4>
+        <table><tr><th>Продукт</th><th class="n">Всего</th><th class="n">Раз</th></tr>
+        ${Object.values(woByProd).sort((a,b)=>b.n-a.n).map(p=>`<tr><td>${esc(p.name)}</td><td class="n"><b>${fq(p.q)}</b> ${esc(p.unit)}</td><td class="n">${p.n}</td></tr>`).join('')}</table>
+        <div class="muted" style="margin:10px 0 4px">По причинам: ${Object.entries(woByReason).map(([k,v])=>`${esc(k)} — ${v}`).join(' · ') || '—'}</div>
+        <table><tr><th>Время</th><th>Бариста</th><th>Что</th><th>Причина</th></tr>
+        ${ws.map(w=>`<tr class="${w.status==='cancelled'?'deleted':''}"><td>${hhmm(w.at)}</td><td>${esc(w.barista)}</td><td>${esc(w.product)} — ${fq(w.qty)} ${esc(w.unit)}${w.status==='cancelled'?' <span class="st deleted">отменено</span>':''}</td><td>${esc(w.reason)}${w.note?`<div class="muted">${esc(w.note)}</div>`:''}</td></tr>`).join('')}</table>
+      </div>`;
+    if(!os.length && !ws.length){ $('report').innerHTML = '<div class="card muted">За этот день нет ни заказов, ни списаний.</div>'; return; }
     $('report').innerHTML = `
       <div class="kpis">
         <div class="kpi"><b>${served.length}</b><span>выдано заказов</span></div>
@@ -697,23 +879,26 @@
         <div class="kpi ${del.length?'red':''}"><b>${del.length}</b><span>удалено</span></div>
         <div class="kpi"><b>${waits.length?dur(avg):'—'}</b><span>ср. ожидание</span></div>
         <div class="kpi"><b>${waits.length?dur(max):'—'}</b><span>макс. ожидание</span></div>
+        <div class="kpi ${wsOk.length?'red':''}"><b>${wsOk.length}</b><span>списаний</span></div>
       </div>
       ${del.length?`<div class="card" style="border-color:#e7b3a8"><h4 style="color:var(--bad)">Удалённые заказы</h4><table><tr><th>№</th><th>Принят</th><th>Удалён</th><th>Кто</th><th>Напитки</th></tr>
         ${del.map(o=>`<tr class="deleted"><td>${o.num}</td><td>${hhmm(o.at)}</td><td>${hhmm(o.deletedAt)}</td><td>${esc(o.deletedBy||o.barista)}</td><td>${itemsTxt(o)}</td></tr>`).join('')}</table></div>`:''}
-      <div class="card"><h4>По бариста</h4><table><tr><th>Бариста</th><th class="n">Заказов</th><th class="n">Напитков</th><th class="n">Удалено</th><th class="n">Ср. ожид.</th></tr>
-        ${Object.entries(byBar).map(([n,b])=>`<tr><td>${esc(n)}</td><td class="n">${b.o}</td><td class="n">${b.d}</td><td class="n" style="${b.del?'color:var(--bad);font-weight:800':''}">${b.del}</td><td class="n">${b.w.length?dur(b.w.reduce((a,c)=>a+c,0)/b.w.length):'—'}</td></tr>`).join('')}</table></div>
+      <div class="card"><h4>По бариста</h4><table><tr><th>Бариста</th><th class="n">Заказов</th><th class="n">Напитков</th><th class="n">Удалено</th><th class="n">Списаний</th><th class="n">Ср. ожид.</th></tr>
+        ${Object.entries(byBar).map(([n,b])=>`<tr><td>${esc(n)}</td><td class="n">${b.o}</td><td class="n">${b.d}</td><td class="n" style="${b.del?'color:var(--bad);font-weight:800':''}">${b.del}</td><td class="n">${b.wo||0}</td><td class="n">${b.w.length?dur(b.w.reduce((a,c)=>a+c,0)/b.w.length):'—'}</td></tr>`).join('')}</table></div>
       <div class="card"><h4>По напиткам</h4><table><tr><th>Напиток</th><th class="n">250</th><th class="n">350</th><th class="n">450</th><th class="n">Всего</th></tr>
         ${Object.entries(byDrink).sort((a,b)=>b[1].t-a[1].t).map(([n,d])=>`<tr><td>${esc(n)}</td><td class="n">${d[250]||''}</td><td class="n">${d[350]||''}</td><td class="n">${d[450]||''}</td><td class="n"><b>${d.t}</b></td></tr>`).join('')}</table></div>
       ${Object.keys(byMod).length?`<div class="card"><h4>Добавки и сиропы</h4><table><tr><th>Добавка</th><th class="n">Раз</th></tr>
         ${Object.entries(byMod).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<tr><td>${esc(n)}</td><td class="n">${c}</td></tr>`).join('')}</table></div>`:''}
       <div class="card"><h4>Все заказы</h4><table><tr><th>№</th><th>Время</th><th>Бариста</th><th>Напитки</th><th>Статус</th><th class="n">Ждал</th></tr>
-        ${os.map(o=>`<tr class="${o.status==='deleted'?'deleted':''}"><td>${o.num}</td><td>${hhmm(o.at)}</td><td>${esc(o.barista)}${o.who?`<div class="muted">${esc(o.who)}</div>`:''}</td><td>${itemsTxt(o)}</td><td><span class="st ${o.status}">${ST[o.status]||o.status}</span></td><td class="n">${o.doneAt?dur(o.doneAt-o.at):''}</td></tr>`).join('')}</table></div>`;
+        ${os.map(o=>`<tr class="${o.status==='deleted'?'deleted':''}"><td>${o.num}</td><td>${hhmm(o.at)}</td><td>${esc(o.barista)}${o.who?`<div class="muted">${esc(o.who)}</div>`:''}</td><td>${itemsTxt(o)}</td><td><span class="st ${o.status}">${ST[o.status]||o.status}</span></td><td class="n">${o.doneAt?dur(o.doneAt-o.at):''}</td></tr>`).join('')}</table></div>
+      ${woHtml}`;
   }
 
   // --- menu ---
   function fillMenu(){
     $('edCoffee').value = M().coffee.join('\n'); $('edOther').value = M().other.join('\n'); $('edTeas').value = M().teas.join('\n');
     $('edMods').value = M().mods.join('\n'); $('edSyrups').value = M().syrups.join('\n');
+    $('edWo').value = woItems().map(i=>`${i.cat} | ${i.name} | ${i.unit}`).join('\n'); $('edReasons').value = woReasons().join('\n');
     $('edWarn').value = S.config.warn; $('edBad').value = S.config.bad; $('menuErr').textContent='';
   }
   const lines = v => v.split('\n').map(s=>s.trim()).filter(Boolean);
@@ -726,6 +911,10 @@
   $('menuSave').onclick = () => {
     const cfg = clone(S.config);
     cfg.menu = { coffee: lines($('edCoffee').value), other: lines($('edOther').value), teas: lines($('edTeas').value), mods: lines($('edMods').value), syrups: lines($('edSyrups').value) };
+    const bad = [];
+    cfg.woItems = lines($('edWo').value).map(l => { const p = l.split('|').map(x=>x.trim()); if(p.length<3 || !p[0] || !p[1] || !p[2]) bad.push(l); return {cat:p[0], name:p[1], unit:p[2]}; }).filter(i=>i.cat&&i.name&&i.unit);
+    if(bad.length) return $('menuErr').textContent = 'Не понял строку списаний: «' + bad[0] + '». Нужно: Категория | Продукт | ед.';
+    cfg.woReasons = lines($('edReasons').value);
     cfg.warn = Math.max(1, +$('edWarn').value || 4); cfg.bad = Math.max(cfg.warn+1, +$('edBad').value || 7);
     saveConfig(cfg, $('menuErr'), $('menuSave'));
   };
@@ -768,7 +957,7 @@
     S.queue=[]; S.counter=0; save(); renderQueue(); toast('Номера обнулены', false); openAdmin('more');
   };
   $('reconnect').onclick = () => {
-    if(Object.keys(S.outbox).length && !confirmOnce('reconnect', 'Есть неотправленные заказы. Нажми ещё раз, чтобы всё равно сменить')) return;
+    if(pendingCount() && !confirmOnce('reconnect', 'Есть неотправленные заказы. Нажми ещё раз, чтобы всё равно сменить')) return;
     S.url=''; S.session=null; adminPin=null; save();
     $('setupStep1').style.display=''; $('setupStep2').style.display='none'; $('setupUrl').value=''; show('setup');
   };
