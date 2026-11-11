@@ -216,6 +216,59 @@
     #vWork[data-tab="queue"] #takePanel{display:none}
     .stat{display:none}
   }
+
+  /* bakery buttons */
+  .c-bake{background:#f6dfc9;border-color:#e9c3a0;border-style:dashed}
+
+  /* AI helper */
+  .aitabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .aitabs::-webkit-scrollbar{display:none}
+  .aitabs button{flex:1 0 auto;padding:10px 12px;border-radius:12px;background:#fff;border:1.5px solid var(--line);font-weight:800;font-size:14px;white-space:nowrap}
+  .aitabs button.on{background:var(--brown);border-color:var(--brown);color:#fff}
+  .aisub{display:none;flex-direction:column;gap:12px}
+  .aisub.on{display:flex}
+  .lab{font-weight:800;font-size:13px;display:block;margin:10px 0 4px}
+  .ta{width:100%;min-height:90px;border-radius:12px;border:1.5px solid var(--line);padding:9px;font:600 14px var(--font);background:#fff;color:var(--ink);resize:vertical}
+  .ta.code{font:500 13px ui-monospace,Consolas,monospace;min-height:180px}
+  .aibox{background:linear-gradient(135deg,#fff8ec,#f7ead9);border:1.5px solid #e4c9a6;border-radius:16px;padding:12px 14px}
+  .aibox h4{color:var(--brown2)}
+  .aibox .sum{font-size:15px;line-height:1.45;font-weight:600}
+  .aibox ul{margin:8px 0 0;padding-left:20px;font-size:14px;line-height:1.4}
+  .aitag{display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;background:var(--brown);color:#fff;margin-left:6px;vertical-align:2px;text-transform:none;letter-spacing:0}
+  .aitag.base{background:var(--cream);color:var(--ink)}
+  .loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:700;font-size:14px}
+  .loading i{width:18px;height:18px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--brown2);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .sup{margin-top:4px}
+  .sup h5{display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-size:15px}
+  .sup h5 .sp{flex:1}
+  .ordrow td{vertical-align:middle}
+  .ordrow.off td{opacity:.4;text-decoration:line-through}
+  .ordrow input[type=checkbox]{width:20px;height:20px;accent-color:var(--brown)}
+  .qin{width:74px;padding:6px 7px;border-radius:8px;border:1.5px solid var(--line);font:700 14px var(--font);text-align:right}
+  .why{font-size:12px;color:var(--muted);font-weight:600}
+  .heatwrap{overflow-x:auto}
+  .heat{border-collapse:separate;border-spacing:3px;font-size:12px;width:auto}
+  .heat th,.heat td{border:0;padding:0;text-align:center}
+  .heat th{font-size:11px;padding:2px 0}
+  .heat td.c{width:38px;height:34px;border-radius:7px;font-weight:800;font-variant-numeric:tabular-nums}
+  .heat td.c.hot{box-shadow:0 0 0 2.5px var(--bad) inset}
+  .heat td.d{font-weight:800;padding-right:6px;text-align:left}
+  .legend2{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:700;margin-top:8px}
+  .legend2 i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:4px;vertical-align:-2px}
+  .shift{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+  .shift b{min-width:110px}
+  .pat{padding:9px 0;border-top:1px solid var(--line)}
+  .pat b{font-size:15px}
+  .pat .cnt{display:inline-block;min-width:24px;text-align:center;background:var(--bad);color:#fff;border-radius:20px;font-size:12px;font-weight:800;padding:1px 7px;margin-right:6px}
+  .reply{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px}
+  .reply .q{font-size:13px;color:var(--muted);font-weight:600;margin:2px 0 6px}
+  .reply .a{font-size:14px;line-height:1.45;border-left:3px solid var(--ok);padding-left:9px}
+  .reply .chipb{margin-top:8px;font-size:13px;padding:7px 10px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+  .grid2 label{font-weight:800;font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+  .okline{color:var(--ok);font-weight:800;font-size:14px}
+  .steps{margin:6px 0 0;padding-left:20px;font-size:14px;line-height:1.5}
 </style>
 </head>
 <body data-view="setup">
@@ -272,7 +325,7 @@
   <main>
     <section class="panel" id="takePanel">
       <div class="screen on" id="scrDrinks">
-        <div class="legend"><span><i style="background:#ecd5bb"></i>Кофе</span><span><i style="background:#fff;border:1px solid #ddd"></i>Не кофе</span><span><i style="background:#e6ead0"></i>Чаи</span></div>
+        <div class="legend"><span><i style="background:#ecd5bb"></i>Кофе</span><span><i style="background:#fff;border:1px solid #ddd"></i>Не кофе</span><span><i style="background:#e6ead0"></i>Чаи</span><span id="lgBake"><i style="background:#f6dfc9;border:1px dashed #d8a982"></i>Выпечка</span></div>
         <div class="drinks" id="drinks"></div>
       </div>
       <div class="screen" id="scrOpts">
@@ -341,6 +394,7 @@
   <header><h1>☕ Управляющий</h1><div class="sp"></div><button class="hbtn" id="adminExit">Выйти</button></header>
   <div class="atabs">
     <button data-ap="report" class="on">Отчёт</button>
+    <button data-ap="ai">✨ ИИ-помощник</button>
     <button data-ap="menu">Меню</button>
     <button data-ap="staff">Сотрудники</button>
     <button data-ap="more">Ещё</button>
@@ -361,6 +415,108 @@
       <div id="report"></div>
     </div>
 
+
+    <div class="apane" id="ap-ai">
+      <div class="aitabs" id="aiTabs">
+        <button data-ai="order" class="on">🛒 Заказ на неделю</button>
+        <button data-ai="peak">⏱ Часы пик и смены</button>
+        <button data-ai="bake">🥐 Выпечка</button>
+        <button data-ai="rev">💬 Отзывы</button>
+        <button data-ai="set">⚙ Настройки</button>
+      </div>
+      <div class="card" id="aiBar">
+        <div class="filters">
+          <span class="muted" style="font-weight:700">Брать продажи за</span>
+          <select class="inp" id="aiWeeks" style="flex:0 1 150px"><option value="2">2 недели</option><option value="4">4 недели</option><option value="8">8 недель</option><option value="12">12 недель</option></select>
+          <button class="chipb" id="aiReload">Обновить данные</button>
+        </div>
+        <div class="muted" id="aiInfo" style="margin-top:6px"></div>
+        <div class="err" id="aiErr"></div>
+        <div class="muted" id="aiKeyWarn" style="display:none;color:#9a6c0c;font-weight:700">Нейросеть ещё не подключена: расчёты по формулам работают, а советы ИИ появятся после ввода ключа в «⚙ Настройки».</div>
+      </div>
+
+      <div class="aisub on" id="ai-order">
+        <div class="card">
+          <h4>Заказ поставщикам на 7 дней</h4>
+          <div class="muted">Расход по продажам и техкартам по дням недели + списания + запас. Нейросеть поправляет на тренд, погоду в Саранске и то, что уже есть на складе. Ты проверяешь и отправляешь.</div>
+          <label class="lab">Что уже есть на складе (необязательно)</label>
+          <textarea class="ta" id="aiStock" placeholder="Например: молоко 12 л, зерно 3 кг, стаканы 350 — 400 шт" style="min-height:64px"></textarea>
+          <button class="big" id="aiOrderGo" style="margin-top:10px;width:100%">Составить заказ</button>
+        </div>
+        <div id="aiOrderOut"></div>
+      </div>
+
+      <div class="aisub" id="ai-peak">
+        <div class="card">
+          <h4>Когда очередь и нужен второй бариста</h4>
+          <div class="muted">Сколько напитков в среднем делают за каждый час по дням недели и сколько гости ждут. Красная рамка — в этот час ждали дольше нормы или бариста не успевает.</div>
+          <button class="big" id="aiPeakGo" style="margin-top:10px;width:100%">Разобрать часы пик</button>
+        </div>
+        <div id="aiPeakOut"></div>
+      </div>
+
+      <div class="aisub" id="ai-bake">
+        <div class="card">
+          <h4>Сколько печь на каждый день</h4>
+          <div class="muted">По продажам выпечки с планшета и по списаниям выпечки. Если много уходит в мусор — план снижается, если всё раскупают — растёт.</div>
+          <button class="big" id="aiBakeGo" style="margin-top:10px;width:100%">Посчитать план выпечки</button>
+        </div>
+        <div id="aiBakeOut"></div>
+      </div>
+
+      <div class="aisub" id="ai-rev">
+        <div class="card">
+          <h4>Разбор отзывов</h4>
+          <div class="muted">Скопируй отзывы с Яндекс Карт, 2ГИС или из соцсетей и вставь сюда как есть, хоть все подряд. Нейросеть найдёт, на что жалуются чаще всего, и напишет черновик ответа каждому гостю.</div>
+          <textarea class="ta" id="aiReviews" style="min-height:180px" placeholder="Айгерим ★★☆☆☆ пн, 8:42&#10;Стояли в очереди 20 минут, капучино принесли еле тёплым…&#10;&#10;Данияр ★★★★★&#10;Лучший флэт уайт в районе!"></textarea>
+          <label class="lab" style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" id="aiRevCtx" checked style="width:18px;height:18px;accent-color:var(--brown)"> Сверить с часами пик из приложения</label>
+          <button class="big" id="aiRevGo" style="margin-top:6px;width:100%">Разобрать отзывы</button>
+        </div>
+        <div id="aiRevOut"></div>
+      </div>
+
+      <div class="aisub" id="ai-set">
+        <div class="card" style="display:flex;flex-direction:column;gap:8px">
+          <h4>Нейросеть</h4>
+          <div id="aiKeyState" class="muted">Проверяю…</div>
+          <input class="inp" id="aiKey" type="password" placeholder="API-ключ Gemini (начинается с AIza…)" autocomplete="off" spellcheck="false">
+          <input class="inp" id="aiModel" placeholder="Модель" autocomplete="off" spellcheck="false">
+          <div class="err" id="aiKeyErr"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="big" id="aiKeySave" style="flex:1">Сохранить ключ</button>
+            <button class="big alt" id="aiKeyTest" style="flex:1">Проверить связь</button>
+          </div>
+          <details><summary style="cursor:pointer;font-weight:800;color:var(--brown2);padding:4px 0">Как получить бесплатный ключ</summary>
+            <ol class="steps">
+              <li>На компьютере открой <b>aistudio.google.com</b> и войди под Google-аккаунтом. Из России сайт открывается только через VPN.</li>
+              <li>Слева внизу нажми <b>«Get API key»</b>, потом <b>«Create API key»</b>.</li>
+              <li>Скопируй ключ (начинается с <code>AIza</code>), вставь в поле выше и нажми «Сохранить ключ».</li>
+            </ol>
+            <div class="muted" style="margin-top:6px">VPN нужен только для получения ключа. Дальше запросы идут с серверов Google, где работает твой скрипт, и всё работает без VPN. Ключ хранится в скрипте таблицы, на планшет он не попадает. Бесплатного лимита Google хватает с запасом.</div>
+          </details>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:6px">
+          <h4>Параметры расчётов</h4>
+          <div class="grid2">
+            <div><label>Запас к заказу, %</label><input class="inp" id="aiReserve" type="number" min="0" max="100"></div>
+            <div><label>Бариста успевает напитков в час</label><input class="inp" id="aiCap" type="number" min="5" max="120"></div>
+            <div><label>Сиропа в напиток, мл</label><input class="inp" id="aiSyr" type="number" min="5" max="60"></div>
+            <div><label>Брать продажи за, недель</label><input class="inp" id="aiW" type="number" min="1" max="26"></div>
+          </div>
+          <label class="lab">Техкарты: «Напиток | объём | ингредиент кол-во ед.; …»</label>
+          <div class="muted">Объём «*» — для любого размера, без стакана (эспрессо). Стакан и крышка к остальным напиткам добавляются сами. Единицы: г, кг, мл, л, шт.</div>
+          <textarea class="ta code" id="aiRecipes" style="min-height:260px"></textarea>
+          <label class="lab">Добавки: «Добавка | Молоко → Замена» или «Добавка | + ингредиент кол-во ед.»</label>
+          <div class="muted">Сиропы из меню считаются сами (как «Сироп ваниль»).</div>
+          <textarea class="ta code" id="aiMods" style="min-height:120px"></textarea>
+          <label class="lab">Поставщики: «Ингредиент | Поставщик». «Сироп *» — все сиропы.</label>
+          <textarea class="ta code" id="aiSup" style="min-height:200px"></textarea>
+          <div class="err" id="aiSetErr"></div>
+          <button class="big" id="aiSetSave">Сохранить параметры</button>
+        </div>
+      </div>
+    </div>
+
     <div class="apane mbox" id="ap-menu">
       <div class="card">
         <h4>Меню для всех устройств</h4>
@@ -368,6 +524,7 @@
         <label>Кофе</label><textarea id="edCoffee"></textarea>
         <label>Не кофе</label><textarea id="edOther" style="min-height:80px"></textarea>
         <label>Чаи</label><textarea id="edTeas"></textarea>
+        <label>Выпечка (продаётся поштучно, без объёма)</label><textarea id="edBakery" style="min-height:80px" placeholder="Круассан&#10;Синнабон"></textarea>
         <label>Молоко и добавки (лучше до 6)</label><textarea id="edMods"></textarea>
         <label>Сиропы (лучше до 8)</label><textarea id="edSyrups"></textarea>
         <label>Списания: продукты — по строке «Категория | Продукт | ед.»</label><textarea id="edWo" style="min-height:160px"></textarea>
@@ -433,7 +590,8 @@
       other: ['Горячий шоколад','Какао','Матча латте'],
       teas: ['Чёрный (Ассам)','Зелёный (Сенча)','Альпийский луг','Облепиха–апельсин','Чёрная смородина','Маракуйя–грейпфрут','Малина–мята','Клюква–лимон'],
       mods: ['Сливки','Кокосовое молоко','Миндальное молоко','Безлактозное молоко','Тёплое молоко','Лимон'],
-      syrups: ['Карамель','Солёная карамель','Ваниль','Лесной орех','Миндаль','Банан','Мята','Лаванда']
+      syrups: ['Карамель','Солёная карамель','Ваниль','Лесной орех','Миндаль','Банан','Мята','Лаванда'],
+      bakery: ['Круассан','Булочка с корицей','Маффин','Печенье']
     },
     staff: [], warn: 4, bad: 7,
     woItems: [
@@ -473,8 +631,9 @@
   function show(v){ document.body.dataset.view = v; if(v==='work') requestAnimationFrame(fitGrid); }
 
   // ============ server ============
-  async function api(action, data, url){
-    const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 20000);
+  async function api(action, data, url, ms){
+    if(typeof url === 'number'){ ms = url; url = null; }
+    const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), ms || 20000);
     try{
       const r = await fetch(url || S.url, {method:'POST', body: JSON.stringify(Object.assign({action}, data||{})), signal: ctrl.signal});
       const j = await r.json();
@@ -619,8 +778,8 @@
     S.session = null; draft = []; pending = null; save(); flush(); renderStaff(); show('login');
   };
 
-  const allDrinks = () => [...M().coffee.map(n=>[n,'c-coffee']), ...M().other.map(n=>[n,'c-other']), ...M().teas.map(n=>[n,'c-tea'])];
-  function renderDrinks(){ $('drinks').innerHTML = allDrinks().map(([n,c]) => `<button class="drink ${c}" data-n="${esc(n)}">${esc(n)}</button>`).join(''); fitGrid(); }
+  const allDrinks = () => [...M().coffee.map(n=>[n,'c-coffee']), ...M().other.map(n=>[n,'c-other']), ...M().teas.map(n=>[n,'c-tea']), ...(M().bakery||[]).map(n=>[n,'c-bake'])];
+  function renderDrinks(){ $('lgBake').style.display = (M().bakery||[]).length ? '' : 'none'; $('drinks').innerHTML = allDrinks().map(([n,c]) => `<button class="drink ${c}" data-n="${esc(n)}">${esc(n)}</button>`).join(''); fitGrid(); }
   function fitGrid(){
     const box = $('drinks'), n = allDrinks().length;
     const w = box.clientWidth, h = box.clientHeight; if(!w || !h) return;
@@ -643,13 +802,14 @@
   function commitPending(){ if(!pending) return false; draft.push({name: pending, size, mods:[...mods]}); closeOpts(); renderDraft(); buzz(15); return true; }
   function renderDraft(){
     const d = $('draft');
-    d.innerHTML = draft.length ? draft.map((it,i)=>`<div class="dchip">${esc(it.name)} <small>${it.size}${it.mods.length?' · '+it.mods.length+' доб.':''}</small><button class="x" data-rm="${i}">×</button></div>`).join('') : '<span class="dempty">Заказ пуст — выбери напиток</span>';
+    d.innerHTML = draft.length ? draft.map((it,i)=>`<div class="dchip">${esc(it.name)} <small>${it.kind==='bake'?'шт':it.size}${it.mods.length?' · '+it.mods.length+' доб.':''}</small><button class="x" data-rm="${i}">×</button></div>`).join('') : '<span class="dempty">Заказ пуст — выбери напиток</span>';
     d.scrollLeft = d.scrollWidth; updateSend();
   }
   function updateSend(){ const n = draft.length + (pending?1:0); $('send').disabled = !n; $('send').textContent = n ? `В очередь · ${n}` : 'В очередь'; }
 
   $('vWork').addEventListener('click', e => {
     const t = e.target.closest('button'); if(!t) return;
+    if(t.classList.contains('c-bake')){ draft.push({name: t.dataset.n, size: null, mods: [], kind: 'bake'}); renderDraft(); buzz(15); t.animate && t.animate([{transform:'scale(.9)'},{transform:'scale(1)'}],{duration:180}); return; }
     if(t.classList.contains('drink')) return openOpts(t.dataset.n);
     if(t.dataset.size){ size = +t.dataset.size; renderOpts(); return; }
     if(t.dataset.m){ const m=t.dataset.m; mods.has(m)?mods.delete(m):mods.add(m); t.classList.toggle('on'); buzz(8); return; }
@@ -676,7 +836,7 @@
         ${o.who?`<div class="owho">${esc(o.who)}</div>`:''}
         <div class="items">${o.items.map((it,i)=>`
           <button class="it ${it.done?'done':''}" data-tick="${o.id}|${i}"><span class="box">${it.done?'✓':''}</span>
-            <span class="nm">${esc(it.name)}${it.mods.length?`<span class="tg">${it.mods.map(esc).join(' · ')}</span>`:''}</span><span class="sz">${it.size} мл</span></button>`).join('')}</div>
+            <span class="nm">${esc(it.name)}${it.mods.length?`<span class="tg">${it.mods.map(esc).join(' · ')}</span>`:''}</span><span class="sz">${it.kind==='bake'?'выпечка':it.size+' мл'}</span></button>`).join('')}</div>
         <div class="oact"><button class="give" data-give="${o.id}">Выдан ✓</button><button class="del" data-del="${o.id}">Удалить</button></div>
       </div>`).join('');
     renderServed(); tick();
@@ -735,11 +895,12 @@
 
   // ============ write-off ============
   let wo = {cat:null, prod:null, qty:'', reason:null};
-  const CAT_IC = {'Молочное':'🥛','Кофе и чай':'☕','Пюре и фрукты':'🍋','Выпечка и еда':'🥐','Расходники':'🥤','Сиропы':'🍯','Напитки (переделка)':'🔁'};
+  const CAT_IC = {'Выпечка':'🥐','Молочное':'🥛','Кофе и чай':'☕','Пюре и фрукты':'🍋','Выпечка и еда':'🥐','Расходники':'🥤','Сиропы':'🍯','Напитки (переделка)':'🔁'};
   function woCatalog(){
     const cats = {};
     woItems().forEach(it => { (cats[it.cat] = cats[it.cat] || []).push({name: it.name, unit: it.unit}); });
     if(M().syrups.length) cats['Сиропы'] = M().syrups.map(n => ({name: 'Сироп ' + n.toLowerCase(), unit: 'мл'}));
+    if((M().bakery||[]).length) cats['Выпечка'] = M().bakery.map(n => ({name: n, unit: 'шт'}));
     const dr = [...M().coffee, ...M().other, ...M().teas];
     if(dr.length) cats['Напитки (переделка)'] = dr.map(n => ({name: n, unit: 'шт'}));
     return cats;
@@ -822,6 +983,7 @@
     if((pane||'report')==='report'){ $('rDate').value = today(); loadReport(); }
   }
   function setPane(p){
+    if(p==='ai') openAiPane();
     document.querySelectorAll('.atabs button').forEach(b => b.classList.toggle('on', b.dataset.ap===p));
     document.querySelectorAll('.apane').forEach(el => el.classList.toggle('on', el.id==='ap-'+p));
   }
@@ -850,14 +1012,16 @@
     const ws = repWo.filter(w => !who || w.barista === who).sort((a,b)=>a.at-b.at), wsOk = ws.filter(w=>w.status!=='cancelled');
     const served = os.filter(o=>o.status==='served'), queued = os.filter(o=>o.status==='queue'), del = os.filter(o=>o.status==='deleted');
     const live = os.filter(o=>o.status!=='deleted');
-    const drinksN = live.reduce((a,o)=>a+o.items.length,0);
+    const drinksN = live.reduce((a,o)=>a+o.items.filter(it=>it.kind!=='bake').length,0);
+    const byBake = {}; live.forEach(o => o.items.forEach(it => { if(it.kind==='bake') byBake[it.name] = (byBake[it.name]||0)+1; }));
+    const bakeN = Object.values(byBake).reduce((a,b)=>a+b,0);
     const waits = served.map(o=>o.doneAt-o.at);
     const avg = waits.length ? waits.reduce((a,b)=>a+b,0)/waits.length : 0, max = waits.length ? Math.max(...waits) : 0;
     const byDrink = {}, byMod = {}, byBar = {};
-    live.forEach(o => o.items.forEach(it => { const d = byDrink[it.name] = byDrink[it.name] || {250:0,350:0,450:0,t:0}; d[it.size] = (d[it.size]||0)+1; d.t++; it.mods.forEach(m => byMod[m]=(byMod[m]||0)+1); }));
-    os.forEach(o => { const b = byBar[o.barista||'—'] = byBar[o.barista||'—'] || {o:0,d:0,del:0,w:[]}; if(o.status==='deleted') b.del++; else { b.o++; b.d+=o.items.length; } if(o.status==='served') b.w.push(o.doneAt-o.at); });
+    live.forEach(o => o.items.forEach(it => { if(it.kind==='bake') return; const d = byDrink[it.name] = byDrink[it.name] || {250:0,350:0,450:0,t:0}; d[it.size] = (d[it.size]||0)+1; d.t++; it.mods.forEach(m => byMod[m]=(byMod[m]||0)+1); }));
+    os.forEach(o => { const b = byBar[o.barista||'—'] = byBar[o.barista||'—'] || {o:0,d:0,del:0,w:[]}; if(o.status==='deleted') b.del++; else { b.o++; b.d+=o.items.filter(it=>it.kind!=='bake').length; } if(o.status==='served') b.w.push(o.doneAt-o.at); });
     wsOk.forEach(w => { const b = byBar[w.barista||'—'] = byBar[w.barista||'—'] || {o:0,d:0,del:0,w:[]}; b.wo = (b.wo||0)+1; });
-    const itemsTxt = o => o.items.map(it=>`${esc(it.name)} ${it.size}${it.mods.length?` <span class="tg" style="display:inline">${it.mods.map(esc).join(', ')}</span>`:''}`).join('<br>');
+    const itemsTxt = o => o.items.map(it=>`${esc(it.name)} ${it.kind==='bake'?'(выпечка)':it.size}${it.mods.length?` <span class="tg" style="display:inline">${it.mods.map(esc).join(', ')}</span>`:''}`).join('<br>');
     const ST = {served:'выдан', queue:'в очереди', deleted:'удалён'};
     const woByProd = {}, woByReason = {};
     wsOk.forEach(w => { const k = w.product+'|'+w.unit; const p = woByProd[k] = woByProd[k] || {name:w.product, unit:w.unit, q:0, n:0}; p.q += +w.qty; p.n++; woByReason[w.reason] = (woByReason[w.reason]||0)+1; });
@@ -875,6 +1039,7 @@
       <div class="kpis">
         <div class="kpi"><b>${served.length}</b><span>выдано заказов</span></div>
         <div class="kpi"><b>${drinksN}</b><span>напитков</span></div>
+        ${bakeN?`<div class="kpi"><b>${bakeN}</b><span>выпечки</span></div>`:''}
         <div class="kpi"><b>${queued.length}</b><span>в очереди сейчас</span></div>
         <div class="kpi ${del.length?'red':''}"><b>${del.length}</b><span>удалено</span></div>
         <div class="kpi"><b>${waits.length?dur(avg):'—'}</b><span>ср. ожидание</span></div>
@@ -887,6 +1052,8 @@
         ${Object.entries(byBar).map(([n,b])=>`<tr><td>${esc(n)}</td><td class="n">${b.o}</td><td class="n">${b.d}</td><td class="n" style="${b.del?'color:var(--bad);font-weight:800':''}">${b.del}</td><td class="n">${b.wo||0}</td><td class="n">${b.w.length?dur(b.w.reduce((a,c)=>a+c,0)/b.w.length):'—'}</td></tr>`).join('')}</table></div>
       <div class="card"><h4>По напиткам</h4><table><tr><th>Напиток</th><th class="n">250</th><th class="n">350</th><th class="n">450</th><th class="n">Всего</th></tr>
         ${Object.entries(byDrink).sort((a,b)=>b[1].t-a[1].t).map(([n,d])=>`<tr><td>${esc(n)}</td><td class="n">${d[250]||''}</td><td class="n">${d[350]||''}</td><td class="n">${d[450]||''}</td><td class="n"><b>${d.t}</b></td></tr>`).join('')}</table></div>
+      ${bakeN?`<div class="card"><h4>Выпечка</h4><table><tr><th>Позиция</th><th class="n">Продано</th></tr>
+        ${Object.entries(byBake).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<tr><td>${esc(n)}</td><td class="n"><b>${c}</b></td></tr>`).join('')}</table></div>`:''}
       ${Object.keys(byMod).length?`<div class="card"><h4>Добавки и сиропы</h4><table><tr><th>Добавка</th><th class="n">Раз</th></tr>
         ${Object.entries(byMod).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<tr><td>${esc(n)}</td><td class="n">${c}</td></tr>`).join('')}</table></div>`:''}
       <div class="card"><h4>Все заказы</h4><table><tr><th>№</th><th>Время</th><th>Бариста</th><th>Напитки</th><th>Статус</th><th class="n">Ждал</th></tr>
@@ -896,7 +1063,7 @@
 
   // --- menu ---
   function fillMenu(){
-    $('edCoffee').value = M().coffee.join('\n'); $('edOther').value = M().other.join('\n'); $('edTeas').value = M().teas.join('\n');
+    $('edCoffee').value = M().coffee.join('\n'); $('edOther').value = M().other.join('\n'); $('edTeas').value = M().teas.join('\n'); $('edBakery').value = (M().bakery||[]).join('\n');
     $('edMods').value = M().mods.join('\n'); $('edSyrups').value = M().syrups.join('\n');
     $('edWo').value = woItems().map(i=>`${i.cat} | ${i.name} | ${i.unit}`).join('\n'); $('edReasons').value = woReasons().join('\n');
     $('edWarn').value = S.config.warn; $('edBad').value = S.config.bad; $('menuErr').textContent='';
@@ -910,7 +1077,7 @@
   }
   $('menuSave').onclick = () => {
     const cfg = clone(S.config);
-    cfg.menu = { coffee: lines($('edCoffee').value), other: lines($('edOther').value), teas: lines($('edTeas').value), mods: lines($('edMods').value), syrups: lines($('edSyrups').value) };
+    cfg.menu = { coffee: lines($('edCoffee').value), other: lines($('edOther').value), teas: lines($('edTeas').value), bakery: lines($('edBakery').value), mods: lines($('edMods').value), syrups: lines($('edSyrups').value) };
     const bad = [];
     cfg.woItems = lines($('edWo').value).map(l => { const p = l.split('|').map(x=>x.trim()); if(p.length<3 || !p[0] || !p[1] || !p[2]) bad.push(l); return {cat:p[0], name:p[1], unit:p[2]}; }).filter(i=>i.cat&&i.name&&i.unit);
     if(bad.length) return $('menuErr').textContent = 'Не понял строку списаний: «' + bad[0] + '». Нужно: Категория | Продукт | ед.';
@@ -967,6 +1134,467 @@
   async function wake(){ try{ if('wakeLock' in navigator) await navigator.wakeLock.request('screen'); }catch(e){} }
   document.addEventListener('click', wake, {once:true});
   document.addEventListener('visibilitychange', () => { if(document.visibilityState==='visible'){ wake(); rollDay(); flush(); pullConfig(); } });
+
+
+  // ============ AI helper (manager only) ============
+  const DEFAULT_AI = {
+    weeks: 4, reserve: 15, capacity: 30, syrupMl: 20,
+    recipes: [
+      'Эспрессо | * | Кофе в зёрнах 18 г',
+      'Американо | 250 | Кофе в зёрнах 18 г',
+      'Американо | 350 | Кофе в зёрнах 18 г',
+      'Американо | 450 | Кофе в зёрнах 36 г',
+      'Капучино | 250 | Кофе в зёрнах 18 г; Молоко 170 мл',
+      'Капучино | 350 | Кофе в зёрнах 18 г; Молоко 250 мл',
+      'Капучино | 450 | Кофе в зёрнах 36 г; Молоко 300 мл',
+      'Латте | 250 | Кофе в зёрнах 18 г; Молоко 195 мл',
+      'Латте | 350 | Кофе в зёрнах 18 г; Молоко 285 мл',
+      'Латте | 450 | Кофе в зёрнах 36 г; Молоко 345 мл',
+      'Флэт уайт | 250 | Кофе в зёрнах 18 г; Молоко 190 мл',
+      'Флэт уайт | 350 | Кофе в зёрнах 36 г; Молоко 250 мл',
+      'Флэт уайт | 450 | Кофе в зёрнах 36 г; Молоко 330 мл',
+      'Раф | 250 | Кофе в зёрнах 18 г; Сливки 180 мл; Сироп ваниль 15 мл',
+      'Раф | 350 | Кофе в зёрнах 18 г; Сливки 260 мл; Сироп ваниль 20 мл',
+      'Раф | 450 | Кофе в зёрнах 36 г; Сливки 315 мл; Сироп ваниль 25 мл',
+      'Бамбл | 250 | Кофе в зёрнах 18 г; Апельсиновый сок 100 мл; Сироп карамель 10 мл',
+      'Бамбл | 350 | Кофе в зёрнах 18 г; Апельсиновый сок 150 мл; Сироп карамель 15 мл',
+      'Бамбл | 450 | Кофе в зёрнах 36 г; Апельсиновый сок 180 мл; Сироп карамель 20 мл',
+      'Горячий шоколад | 250 | Шоколад RIOBA 30 г; Молоко 200 мл',
+      'Горячий шоколад | 350 | Шоколад RIOBA 40 г; Молоко 280 мл',
+      'Горячий шоколад | 450 | Шоколад RIOBA 50 г; Молоко 360 мл',
+      'Какао | 250 | Какао 15 г; Сахар в стиках 1 шт; Молоко 210 мл',
+      'Какао | 350 | Какао 20 г; Сахар в стиках 1 шт; Молоко 300 мл',
+      'Какао | 450 | Какао 25 г; Сахар в стиках 1 шт; Молоко 380 мл',
+      'Матча латте | 250 | Матча 2 г; Молоко 190 мл',
+      'Матча латте | 350 | Матча 3 г; Молоко 270 мл',
+      'Матча латте | 450 | Матча 4 г; Молоко 350 мл',
+      'Чёрный (Ассам) | 250 | Чай Ассам 3 г',
+      'Чёрный (Ассам) | 350 | Чай Ассам 4 г',
+      'Чёрный (Ассам) | 450 | Чай Ассам 5 г',
+      'Зелёный (Сенча) | 250 | Чай Сенча 3 г',
+      'Зелёный (Сенча) | 350 | Чай Сенча 4 г',
+      'Зелёный (Сенча) | 450 | Чай Сенча 5 г',
+      'Альпийский луг | 250 | Чай Альпийский луг 3 г',
+      'Альпийский луг | 350 | Чай Альпийский луг 4 г',
+      'Альпийский луг | 450 | Чай Альпийский луг 5 г',
+      'Облепиха–апельсин | 250 | Пюре облепиха–апельсин–имбирь 30 мл; Чай Ассам 2 г',
+      'Облепиха–апельсин | 350 | Пюре облепиха–апельсин–имбирь 40 мл; Чай Ассам 3 г',
+      'Облепиха–апельсин | 450 | Пюре облепиха–апельсин–имбирь 50 мл; Чай Ассам 3 г',
+      'Чёрная смородина | 250 | Пюре чёрная смородина–базилик 30 мл; Чай Ассам 2 г',
+      'Чёрная смородина | 350 | Пюре чёрная смородина–базилик 40 мл; Чай Ассам 3 г',
+      'Чёрная смородина | 450 | Пюре чёрная смородина–базилик 50 мл; Чай Ассам 3 г',
+      'Маракуйя–грейпфрут | 250 | Пюре маракуйя–грейпфрут–ваниль 30 мл; Чай Ассам 2 г',
+      'Маракуйя–грейпфрут | 350 | Пюре маракуйя–грейпфрут–ваниль 40 мл; Чай Ассам 3 г',
+      'Маракуйя–грейпфрут | 450 | Пюре маракуйя–грейпфрут–ваниль 50 мл; Чай Ассам 3 г',
+      'Малина–мята | 250 | Пюре малина 30 г; Сироп мята 8 мл; Чай Ассам 2 г',
+      'Малина–мята | 350 | Пюре малина 40 г; Сироп мята 10 мл; Чай Ассам 3 г',
+      'Малина–мята | 450 | Пюре малина 50 г; Сироп мята 12 мл; Чай Ассам 3 г',
+      'Клюква–лимон | 250 | Пюре клюква 30 г; Лимон 0,1 шт; Чай Ассам 2 г',
+      'Клюква–лимон | 350 | Пюре клюква 40 г; Лимон 0,1 шт; Чай Ассам 3 г',
+      'Клюква–лимон | 450 | Пюре клюква 50 г; Лимон 0,1 шт; Чай Ассам 3 г'
+    ].join('\n'),
+    mods: [
+      'Сливки | Молоко → Сливки',
+      'Кокосовое молоко | Молоко → Кокосовое молоко',
+      'Миндальное молоко | Молоко → Миндальное молоко',
+      'Безлактозное молоко | Молоко → Безлактозное молоко',
+      'Тёплое молоко | + Молоко 50 мл',
+      'Лимон | + Лимон 0,1 шт'
+    ].join('\n'),
+    suppliers: [
+      'Кофе в зёрнах | Михаил Лузинг',
+      'Сироп * | Михаил Лузинг',
+      'Пюре * | Михаил Лузинг',
+      'Чай * | Михаил Лузинг',
+      'Матча | Михаил Лузинг',
+      'Молоко | METRO',
+      'Сливки | METRO',
+      'Кокосовое молоко | METRO',
+      'Миндальное молоко | METRO',
+      'Безлактозное молоко | METRO',
+      'Шоколад RIOBA | METRO',
+      'Сахар в стиках | METRO',
+      'Лимон | Лента',
+      'Апельсиновый сок | Лента'
+    ].join('\n')
+  };
+  const WD = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+  const WD_FULL = ['понедельник','вторник','среда','четверг','пятница','суббота','воскресенье'];
+  const isBake = it => it && it.kind === 'bake';
+  const bakery = () => M().bakery || [];
+  const wdOf = ds => (new Date(ds + 'T12:00:00').getDay() + 6) % 7;
+  const addDays = (ds, n) => { const d = new Date(ds + 'T12:00:00'); d.setDate(d.getDate() + n); return dstr(d); };
+  const dmy = ds => { const [y,m,d] = ds.split('-'); return `${+d}.${m}`; };
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  const num = (q, d) => String(Math.round(q * Math.pow(10, d==null?2:d)) / Math.pow(10, d==null?2:d)).replace('.', ',');
+  const aiCfg = () => Object.assign({}, DEFAULT_AI, S.config.ai || {});
+
+  function baseQty(q, u){
+    u = String(u || 'шт').toLowerCase().replace(/\./g, '').trim();
+    if(u === 'г') return [q/1000, 'кг'];
+    if(u === 'мл') return [q/1000, 'л'];
+    return [q, u];
+  }
+  function parseAmt(s){
+    const m = String(s).trim().match(/^(.*?\S)\s+(\d+(?:[.,]\d+)?)\s*(кг|г|мл|л|шт)\.?$/i);
+    if(!m) return null;
+    const [q, u] = baseQty(parseFloat(m[2].replace(',', '.')), m[3]);
+    return {name: cap(m[1].trim()), q, u};
+  }
+  function buildModel(){
+    const a = aiCfg(), rec = {}, mods = {}, bad = [];
+    lines(a.recipes).forEach(l => {
+      const p = l.split('|').map(x => x.trim());
+      if(p.length < 3 || !p[0]) return bad.push(l);
+      const ings = [];
+      p[2].split(';').map(x => x.trim()).filter(Boolean).forEach(x => { const r = parseAmt(x); r ? ings.push(r) : bad.push(l); });
+      rec[p[0].toLowerCase() + '|' + p[1].replace(/\s/g, '')] = ings;
+    });
+    lines(a.mods).forEach(l => {
+      const p = l.split('|').map(x => x.trim()); if(p.length < 2) return bad.push(l);
+      const r = p[1]; let m;
+      if(r.startsWith('+')){ const x = parseAmt(r.slice(1)); x ? mods[p[0].toLowerCase()] = {add: x} : bad.push(l); }
+      else if((m = r.match(/^(.+?)\s*(?:→|->)\s*(.+)$/))) mods[p[0].toLowerCase()] = {from: m[1].trim().toLowerCase(), to: cap(m[2].trim())};
+      else bad.push(l);
+    });
+    const sup = lines(a.suppliers).map(l => l.split('|').map(x => x.trim())).filter(p => p.length >= 2 && p[0] && p[1]).map(([pat, s]) => ({pat: pat.toLowerCase(), s}));
+    return {rec, mods, sup, bad, a};
+  }
+  function supplierOf(md, name){
+    const n = name.toLowerCase();
+    for(const r of md.sup){ if(r.pat.endsWith('*') ? n.startsWith(r.pat.slice(0, -1).trim()) : n === r.pat) return r.s; }
+    return 'Поставщик не указан';
+  }
+  function itemUse(md, it, missing){
+    const nm = String(it.name).toLowerCase();
+    const exact = md.rec[nm + '|' + it.size], star = md.rec[nm + '|*'];
+    const ings = exact || star;
+    if(!ings){ missing.add(it.name + (it.size ? ' ' + it.size : '')); return []; }
+    const out = ings.map(x => Object.assign({}, x));
+    (it.mods || []).forEach(m => {
+      const ml = String(m).toLowerCase();
+      if(ml.startsWith('сироп ')){ out.push({name: cap(ml), q: md.a.syrupMl/1000, u: 'л'}); return; }
+      const r = md.mods[ml]; if(!r) return;
+      if(r.add) out.push(Object.assign({}, r.add));
+      else out.forEach(x => { if(x.name.toLowerCase() === r.from) x.name = r.to; });
+    });
+    if(exact && it.size) out.push({name: 'Стакан ' + it.size, q: 1, u: 'шт'}, {name: 'Крышка', q: 1, u: 'шт'});
+    return out;
+  }
+
+  // ---- data ----
+  let AI = {data: null, weather: null, hasKey: null, sub: 'order', stats: null};
+  async function getWeather(){
+    if(AI.weather && Date.now() - AI.weather.t < 3600e3) return AI.weather;
+    try{
+      const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=54.18&longitude=45.18&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FMoscow&past_days=92&forecast_days=8');
+      const j = await r.json(); const w = {t: Date.now(), days: {}};
+      j.daily.time.forEach((d, i) => w.days[d] = {t: Math.round(j.daily.temperature_2m_max[i]), p: Math.round((j.daily.precipitation_sum[i] || 0) * 10) / 10});
+      AI.weather = w; return w;
+    }catch(e){ return null; }
+  }
+  async function aiData(force){
+    const weeks = +$('aiWeeks').value || aiCfg().weeks;
+    if(!force && AI.data && AI.data.weeks === weeks && Date.now() - AI.data.t < 10*60e3) return AI.data;
+    $('aiErr').textContent = ''; $('aiInfo').innerHTML = '<span class="loading"><i></i>Загружаю продажи из таблицы…</span>';
+    const from = addDays(today(), -weeks * 7);
+    const [r, w] = await Promise.all([api('report', {pin: adminPin, from, to: today()}, 90000), getWeather()]);
+    AI.data = {t: Date.now(), weeks, orders: r.orders || [], wos: r.writeoffs || [], weather: w};
+    AI.stats = computeStats(AI.data);
+    const st = AI.stats;
+    $('aiInfo').innerHTML = st.days.length
+      ? `Данные: <b>${st.days.length}</b> дн. с продажами (${dmy(st.days[0])} — ${dmy(st.days[st.days.length-1])})${st.partial ? ', только сегодня — расчёт будет грубым' : ''} · в среднем <b>${num(st.drinks / st.days.length, 0)}</b> напитков в день${w ? '' : ' · погоду загрузить не удалось'}`
+      : 'За выбранный период в таблице нет заказов. Расчёты появятся, когда накопятся продажи.';
+    return AI.data;
+  }
+
+  function computeStats(D){
+    const md = buildModel(), missing = new Set(), tday = today();
+    let os = D.orders.filter(o => o.status !== 'deleted' && o.items && o.items.length);
+    let days = [...new Set(os.map(o => o.date))].filter(d => d < tday).sort(), partial = false;
+    if(!days.length){ days = [...new Set(os.map(o => o.date))].sort(); partial = days.length > 0; }
+    const daySet = new Set(days); os = os.filter(o => daySet.has(o.date));
+    const first = days[0], last = days[days.length - 1];
+    const ws = first ? D.wos.filter(w => w.status !== 'cancelled' && w.date >= first && w.date <= last) : [];
+    const spanDays = first ? Math.round((new Date(last + 'T12:00:00') - new Date(first + 'T12:00:00')) / 864e5) + 1 : 1;
+    const nWd = [0,0,0,0,0,0,0]; days.forEach(d => nWd[wdOf(d)]++);
+    const ing = {}, bake = {}, perDay = {};
+    const addIng = (name, q, u, wd, wo) => { const k = name.toLowerCase() + '|' + u; const g = ing[k] = ing[k] || {name, u, wd: [0,0,0,0,0,0,0], wo: 0}; if(wo) g.wo += q; else g.wd[wd] += q; };
+    const bk = n => bake[n] = bake[n] || {name: n, wd: [0,0,0,0,0,0,0], wo: [0,0,0,0,0,0,0]};
+    days.forEach(d => perDay[d] = {date: d, wd: wdOf(d), orders: 0, drinks: 0, bake: 0});
+    const heat = Array.from({length: 7}, () => Array.from({length: 24}, () => ({o: 0, d: 0, w: []})));
+    let drinks = 0;
+    os.forEach(o => {
+      const wd = wdOf(o.date), h = new Date(o.at).getHours(), pd = perDay[o.date], cell = heat[wd][h];
+      pd.orders++; cell.o++;
+      if(o.status === 'served' && o.doneAt) cell.w.push((o.doneAt - o.at) / 60000);
+      o.items.forEach(it => {
+        if(isBake(it)){ bk(it.name).wd[wd]++; pd.bake++; return; }
+        drinks++; pd.drinks++; cell.d++;
+        itemUse(md, it, missing).forEach(x => addIng(x.name, x.q, x.u, wd, false));
+      });
+    });
+    const bakeNames = new Set(bakery().map(s => s.toLowerCase()));
+    ws.forEach(w => {
+      const wd = wdOf(w.date), q = +w.qty || 0;
+      if(w.cat === 'Выпечка' || bakeNames.has(String(w.product).toLowerCase())){ bk(w.product).wo[wd] += q; return; }
+      if(w.cat === 'Напитки (переделка)'){ for(let i = 0; i < Math.round(q); i++) itemUse(md, {name: w.product, size: 350, mods: []}, missing).forEach(x => addIng(x.name, x.q, x.u, wd, true)); return; }
+      const [bq, bu] = baseQty(q, w.unit); addIng(cap(String(w.product)), bq, bu, wd, true);
+    });
+    const avgAll = days.length ? 1 / days.length : 0;
+    const res = Object.values(ing).map(g => {
+      const tot = g.wd.reduce((a, b) => a + b, 0);
+      const perWd = g.wd.map((v, i) => nWd[i] ? v / nWd[i] : tot * avgAll);
+      const woWeek = g.wo / spanDays * 7;
+      const week = perWd.reduce((a, b) => a + b, 0) + woWeek;
+      return {name: g.name, u: g.u, supplier: supplierOf(md, g.name), perWd, woWeek, week};
+    }).filter(g => g.week > 0).sort((a, b) => a.supplier.localeCompare(b.supplier, 'ru') || b.week - a.week);
+    const bakeRes = Object.values(bake).map(b => ({name: b.name, sold: b.wd.map((v, i) => nWd[i] ? v / nWd[i] : 0), waste: b.wo.map((v, i) => nWd[i] ? v / nWd[i] : 0)}));
+    const W = D.weather ? D.weather.days : {};
+    const dayList = days.map(d => Object.assign({}, perDay[d], W[d] ? {t: W[d].t, rain: W[d].p} : {}));
+    return {md, missing: [...missing], days, partial, nWd, drinks, ing: res, bake: bakeRes, heat, dayList, spanDays, ws};
+  }
+  function nextDays(n){ return Array.from({length: n}, (_, i) => addDays(today(), i + 1)); }
+  function forecastList(){ const W = AI.data && AI.data.weather ? AI.data.weather.days : {}; return nextDays(7).map(d => Object.assign({date: d, day: WD[wdOf(d)]}, W[d] ? {t: W[d].t, rain: W[d].p} : {})); }
+  function roundBuy(q, u){ if(u === 'шт') return Math.ceil(q - 1e-9); if(q >= 3) return Math.ceil(q - 1e-9); return Math.ceil(q * 10 - 1e-9) / 10; }
+
+  // ---- AI request ----
+  const AI_SYSTEM = 'Ты — помощник управляющего кофейни «Кофеварня» в Саранске. Кофейня открыта при Саранском механическом заводе, но работает для всех гостей. Пиши по-русски, коротко и по делу, без воды. Опирайся только на присланные данные и не выдумывай цифр. Если данных мало (меньше двух недель) — прямо скажи об этом в summary. Верни строго один JSON-объект по схеме из задания, без пояснений вокруг.';
+  async function askAI(task, schema, data){
+    const prompt = `${task}\n\nСхема ответа (JSON):\n${schema}\n\nДанные:\n${JSON.stringify(data)}`;
+    const r = await api('ai', {pin: adminPin, system: AI_SYSTEM, prompt}, 150000);
+    let t = String(r.text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+    try{ return JSON.parse(t); }catch(e){}
+    const a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if(a >= 0 && b > a){ try{ return JSON.parse(t.slice(a, b + 1)); }catch(e){} }
+    throw new Error('Нейросеть ответила в непонятном формате. Нажми ещё раз.');
+  }
+  const loadingBox = txt => `<div class="card"><div class="loading"><i></i>${esc(txt)}</div></div>`;
+  const aiErrBox = e => `<div class="card"><div class="err">ИИ: ${esc(e.message)}</div></div>`;
+  function aiBox(title, r, extra){
+    const notes = (r.notes || []).filter(Boolean);
+    return `<div class="aibox"><h4>${esc(title)}<span class="aitag">ИИ</span></h4><div class="sum">${esc(r.summary || '')}</div>${extra || ''}${notes.length ? `<ul>${notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}</div>`;
+  }
+  async function copyText(t){
+    try{ await navigator.clipboard.writeText(t); }
+    catch(e){ const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(_){} ta.remove(); }
+    toast('Скопировано', false);
+  }
+  async function needData(outId){
+    try{ await aiData(); return AI.stats; }
+    catch(e){ $('aiInfo').textContent = ''; $(outId).innerHTML = `<div class="card"><div class="err">${esc(e.message)}</div></div>`; return null; }
+  }
+  const noData = () => '<div class="card muted">Пока нет продаж за выбранный период. Когда планшет поработает хотя бы неделю, здесь появится расчёт.</div>';
+  function missingBox(st){
+    const bad = st.md.bad;
+    return (st.missing.length ? `<div class="card" style="border-color:#e7c98e"><b>Нет техкарт для:</b> ${st.missing.map(esc).join(', ')}. Их расход не посчитан — добавь строки в «⚙ Настройки».</div>` : '')
+      + (bad.length ? `<div class="card" style="border-color:#e7b3a8"><b>Не понял строки в настройках:</b><br>${bad.slice(0, 5).map(esc).join('<br>')}</div>` : '');
+  }
+
+  // ---- 1. weekly order ----
+  let orderRows = [];
+  function drawOrder(rows, aiRes){
+    orderRows = rows;
+    const groups = {};
+    rows.forEach((r, i) => (groups[r.supplier] = groups[r.supplier] || []).push(i));
+    const gl = Object.entries(groups).sort((a, b) => (a[0] === 'Поставщик не указан') - (b[0] === 'Поставщик не указан') || a[0].localeCompare(b[0], 'ru'));
+    const head = aiRes ? aiBox('Черновик заказа', aiRes) : '';
+    $('aiOrderOut2').innerHTML = head + `<div class="card"><h4>Проверь и отправь${aiRes ? '<span class="aitag">ИИ</span>' : '<span class="aitag base">по формуле</span>'}</h4>
+      <div class="muted">Сними галочку, если позиция не нужна, и поправь количество. Кнопка «Скопировать» соберёт текст заказа для поставщика.</div>
+      ${gl.map(([sup, idx]) => `<div class="sup"><h5>${esc(sup)}<span class="sp"></span><button class="chipb" data-ocopy="${esc(sup)}">Скопировать</button></h5>
+        <table>${idx.map(i => { const r = rows[i]; return `<tr class="ordrow ${r.off ? 'off' : ''}"><td style="width:28px"><input type="checkbox" data-ochk="${i}" ${r.off ? '' : 'checked'}></td>
+          <td><b>${esc(r.name)}</b>${r.why ? `<div class="why">${esc(r.why)}</div>` : ''}</td>
+          <td class="n" style="white-space:nowrap"><input class="qin" data-oq="${i}" value="${num(r.qty)}" inputmode="decimal"> ${esc(r.unit)}</td></tr>`; }).join('')}</table></div>`).join('')}
+    </div>`;
+  }
+  $('aiOrderOut').addEventListener('change', e => {
+    const c = e.target.closest('[data-ochk]'); if(c){ orderRows[+c.dataset.ochk].off = !c.checked; c.closest('tr').classList.toggle('off', !c.checked); }
+    const q = e.target.closest('[data-oq]'); if(q){ const v = parseFloat(q.value.replace(',', '.')); if(v >= 0) orderRows[+q.dataset.oq].qty = v; }
+  });
+  $('aiOrderOut').addEventListener('click', e => {
+    const b = e.target.closest('[data-ocopy]'); if(!b) return;
+    const sup = b.dataset.ocopy, rows = orderRows.filter(r => r.supplier === sup && !r.off && r.qty > 0);
+    if(!rows.length) return toast('У этого поставщика не отмечено ни одной позиции', false);
+    copyText(`Здравствуйте! Заказ для кофейни «Кофеварня»:\n` + rows.map(r => `• ${r.name} — ${num(r.qty)} ${r.unit}`).join('\n') + `\nСпасибо!`);
+  });
+  $('aiOrderGo').onclick = async () => {
+    const out = $('aiOrderOut'); out.innerHTML = loadingBox('Считаю расход…');
+    const st = await needData('aiOrderOut'); if(!st) return;
+    if(!st.days.length){ out.innerHTML = noData(); return; }
+    const a = aiCfg(), k = 1 + (+a.reserve || 0) / 100;
+    const base = st.ing.map(g => ({supplier: g.supplier, name: g.name, unit: g.u, qty: roundBuy(g.week * k, g.u), why: `≈${num(g.week / 7, g.u === 'шт' ? 0 : 2)} ${g.u} в день${g.woWeek > 0 ? `, списания ${num(g.woWeek, 2)} ${g.u}/нед.` : ''}`}));
+    out.innerHTML = missingBox(st) + '<div id="aiOrderOut2"></div><div id="aiOrderAI"></div>';
+    drawOrder(base, null);
+    if(!AI.hasKey) return;
+    $('aiOrderAI').innerHTML = loadingBox('Нейросеть смотрит тренд, погоду и остатки…');
+    try{
+      const weekTotals = {};
+      st.dayList.forEach(d => { const wk = addDays(d.date, -d.wd); weekTotals[wk] = (weekTotals[wk] || 0) + d.drinks; });
+      const r = await askAI(
+        `Задача: составить черновик заказа поставщикам на 7 дней (${dmy(nextDays(7)[0])}–${dmy(nextDays(7)[6])}). Бери за основу baselineWeek: расход по техкартам по дням недели + списания. Учти тренд продаж по неделям, прогноз погоды (дождь и холод обычно меняют поток) и остатки на складе, если они указаны: вычти их. Добавь запас ${a.reserve}%. Не добавляй позиций, которых нет в списке. Количество округли до удобных закупочных единиц. supplier копируй как в данных. В notes — что проверить и что выглядит странно (например, списаний слишком много).`,
+        '{"summary":"2–4 предложения о неделе","items":[{"supplier":"","name":"","qty":0,"unit":"кг|л|шт","why":"коротко почему столько"}],"notes":["…"]}',
+        {period: {from: st.days[0], to: st.days[st.days.length-1], daysWithSales: st.days.length, onlyToday: st.partial},
+         drinksByWeek: weekTotals, days: st.dayList.map(d => ({date: d.date, day: WD[d.wd], drinks: d.drinks, t: d.t, rain: d.rain})),
+         ingredients: st.ing.map(g => ({name: g.name, unit: g.u, supplier: g.supplier, perWeekday: Object.fromEntries(WD.map((w, i) => [w, +g.perWd[i].toFixed(3)])), writeoffPerWeek: +g.woWeek.toFixed(3), baselineWeek: +g.week.toFixed(3)})),
+         forecast: forecastList(), stock: $('aiStock').value.trim() || 'не указано', reservePercent: +a.reserve, noRecipe: st.missing});
+      const items = (r.items || []).filter(x => x && x.name && +x.qty >= 0).map(x => ({supplier: x.supplier || supplierOf(st.md, x.name), name: x.name, unit: x.unit || '', qty: roundBuy(+x.qty, String(x.unit || '').trim()), why: x.why || ''}));
+      $('aiOrderAI').innerHTML = '';
+      if(items.length) drawOrder(items, r); else $('aiOrderAI').innerHTML = aiBox('Черновик заказа', r);
+    }catch(e){ $('aiOrderAI').innerHTML = aiErrBox(e); }
+  };
+
+  // ---- 2. peak hours ----
+  function peakBase(st){
+    const a = aiCfg(), capH = +a.capacity || 30, warn = S.config.warn || 4;
+    const hours = []; st.heat.forEach(row => row.forEach((c, h) => { if(c.o) hours.push(h); }));
+    const h0 = Math.min(...hours), h1 = Math.max(...hours);
+    const cells = st.heat.map((row, wd) => row.map((c, h) => {
+      const n = st.nWd[wd] || 1, w = c.w.slice().sort((x, y) => x - y);
+      const med = w.length ? w[Math.floor(w.length / 2)] : 0;
+      return {h, o: c.o / n, d: c.d / n, wait: med, maxw: w.length ? w[w.length - 1] : 0, hot: st.nWd[wd] > 0 && (c.d / n >= capH * 0.8 || med >= warn)};
+    }));
+    const recs = [];
+    cells.forEach((row, wd) => { let s = -1; for(let h = h0; h <= h1 + 1; h++){ const hot = h <= h1 && row[h].hot; if(hot && s < 0) s = h; if(!hot && s >= 0){ recs.push({wd, from: s, to: h}); s = -1; } } });
+    return {h0, h1, cells, recs, capH, warn};
+  }
+  $('aiPeakGo').onclick = async () => {
+    const out = $('aiPeakOut'); out.innerHTML = loadingBox('Считаю по часам…');
+    const st = await needData('aiPeakOut'); if(!st) return;
+    if(!st.days.length){ out.innerHTML = noData(); return; }
+    const P = peakBase(st);
+    let mx = 0; P.cells.forEach(r => r.forEach(c => mx = Math.max(mx, c.d)));
+    const color = v => { if(!v) return '#f4ede4'; const t = Math.min(1, v / Math.max(mx, 1)); return `rgba(${Math.round(200 - 60*t)},${Math.round(150 - 80*t)},${Math.round(100 - 60*t)},${0.18 + 0.75*t})`; };
+    const hrs = []; for(let h = P.h0; h <= P.h1; h++) hrs.push(h);
+    out.innerHTML = `<div class="card"><h4>Напитков в час, в среднем<span class="aitag base">по данным</span></h4><div class="heatwrap"><table class="heat">
+      <tr><th></th>${hrs.map(h => `<th>${String(h).padStart(2, '0')}</th>`).join('')}</tr>
+      ${P.cells.map((row, wd) => `<tr><td class="d">${WD[wd]}${st.nWd[wd] ? '' : ' <span class="muted">—</span>'}</td>${hrs.map(h => { const c = row[h]; return `<td class="c ${c.hot ? 'hot' : ''}" style="background:${color(c.d)};color:${c.d / Math.max(mx,1) > .55 ? '#fff' : 'var(--ink)'}" title="${WD_FULL[wd]}, ${h}:00 — ${num(c.d, 1)} напитков, ожидание ~${num(c.wait, 1)} мин">${c.d ? num(c.d, c.d < 10 ? 1 : 0) : ''}</td>`; }).join('')}</tr>`).join('')}
+      </table></div>
+      <div class="legend2"><span><i style="background:rgba(140,70,40,.93)"></i>больше всего напитков</span><span><i style="box-shadow:0 0 0 2.5px var(--bad) inset;background:#fff"></i>ждали ≥ ${P.warn} мин или больше ${Math.round(P.capH*0.8)} напитков в час</span></div>
+      <h4 style="margin-top:14px">Второй бариста нужен<span class="aitag base">по формуле</span></h4>
+      ${P.recs.length ? P.recs.map(r => `<div class="shift"><b>${WD_FULL[r.wd]}</b><span>${String(r.from).padStart(2,'0')}:00–${String(r.to).padStart(2,'0')}:00</span></div>`).join('') : '<div class="muted">По этим данным один бариста справляется: перегруженных часов нет.</div>'}
+      <div class="muted" style="margin-top:6px">Бариста успевает ~${P.capH} напитков в час — это число можно поменять в «⚙ Настройки».</div></div><div id="aiPeakAI"></div>`;
+    if(!AI.hasKey) return;
+    $('aiPeakAI').innerHTML = loadingBox('Нейросеть составляет смены…');
+    try{
+      const grid = {};
+      P.cells.forEach((row, wd) => { if(!st.nWd[wd]) return; grid[WD[wd]] = {}; for(let h = P.h0; h <= P.h1; h++){ const c = row[h]; if(c.o) grid[WD[wd]][h + ':00'] = {orders: +c.o.toFixed(1), drinks: +c.d.toFixed(1), medianWaitMin: +c.wait.toFixed(1), maxWaitMin: +c.maxw.toFixed(1)}; } });
+      const r = await askAI(
+        `Задача: по почасовой статистике найти часы пик и предложить, в какие дни и часы ставить второго бариста. Один бариста успевает около ${P.capH} напитков в час, нормальное ожидание — до ${P.warn} минут. Предлагай смены целыми получасами или часами, не дроби, объединяй соседние часы. Если второй бариста не нужен — скажи прямо. В notes — что ещё помогло бы в пик (заготовки, предзаказ, порядок работы).`,
+        '{"summary":"2–3 предложения","shifts":[{"day":"Пн","from":"08:00","to":"10:00","why":"коротко"}],"notes":["…"]}',
+        {daysWithSales: st.days.length, daysPerWeekday: Object.fromEntries(WD.map((w, i) => [w, st.nWd[i]])), averagesPerHour: grid, formulaSuggestion: P.recs.map(x => ({day: WD[x.wd], from: x.from + ':00', to: x.to + ':00'}))});
+      const sh = (r.shifts || []).filter(x => x && x.day);
+      $('aiPeakAI').innerHTML = aiBox('Смены', r, sh.length ? `<div style="margin-top:8px">${sh.map(x => `<div class="shift"><b>${esc(x.day)} ${esc(x.from || '')}–${esc(x.to || '')}</b><span class="why" style="font-size:13px">${esc(x.why || '')}</span></div>`).join('')}</div>` : '');
+    }catch(e){ $('aiPeakAI').innerHTML = aiErrBox(e); }
+  };
+
+  // ---- 3. bakery ----
+  $('aiBakeGo').onclick = async () => {
+    const out = $('aiBakeOut');
+    if(!bakery().length){ out.innerHTML = '<div class="card">Сначала добавь выпечку в разделе <b>«Меню» → «Выпечка»</b>. После этого на планшете появятся её кнопки, и бариста будут пробивать её вместе с напитками.</div>'; return; }
+    out.innerHTML = loadingBox('Считаю продажи выпечки…');
+    const st = await needData('aiBakeOut'); if(!st) return;
+    const dates = nextDays(7), fc = forecastList();
+    const names = [...new Set([...bakery(), ...st.bake.map(b => b.name)])];
+    const rows = names.map(n => {
+      const b = st.bake.find(x => x.name.toLowerCase() === n.toLowerCase()) || {sold: [0,0,0,0,0,0,0], waste: [0,0,0,0,0,0,0]};
+      const plan = dates.map(d => { const wd = wdOf(d), s = b.sold[wd], w = b.waste[wd]; return s ? Math.max(1, Math.round(w > s * 0.15 ? s : s * 1.1 + 0.4)) : 0; });
+      const sold = b.sold.reduce((a, c) => a + c, 0), waste = b.waste.reduce((a, c) => a + c, 0);
+      return {name: n, b, plan, sold, waste};
+    });
+    if(!rows.some(r => r.sold > 0)){ out.innerHTML = '<div class="card muted">Продаж выпечки за этот период ещё нет. Бариста пробивают её на планшете кнопками в коричневой пунктирной рамке, и через неделю здесь появится план.</div>'; return; }
+    const table = (plan, tag) => `<table><tr><th>Выпечка</th>${dates.map((d, i) => `<th class="n">${WD[wdOf(d)]}<br><span style="font-weight:600">${dmy(d)}${fc[i].rain >= 1 ? ' 🌧' : ''}</span></th>`).join('')}</tr>
+      ${plan.map(p => `<tr><td><b>${esc(p.name)}</b>${p.sub ? `<div class="why">${esc(p.sub)}</div>` : ''}</td>${p.plan.map(v => `<td class="n"><b>${v || '—'}</b></td>`).join('')}</tr>`).join('')}</table>`;
+    out.innerHTML = `<div class="card"><h4>План выпечки<span class="aitag base">по формуле</span></h4><div style="overflow-x:auto">${table(rows.map(r => ({name: r.name, plan: r.plan, sub: `в среднем продаётся ${num(r.sold / 7, 1)}/день, списывается ${num(r.waste / 7, 1)}/день`})))}</div>
+      <div class="muted" style="margin-top:6px">Формула: средние продажи этого дня недели +10%. Если списывается больше 15% от продаж, запас не добавляется.</div></div><div id="aiBakeAI"></div>`;
+    if(!AI.hasKey) return;
+    $('aiBakeAI').innerHTML = loadingBox('Нейросеть уточняет план…');
+    try{
+      const r = await askAI(
+        `Задача: план выпечки на 7 дней по датам ${dates.join(', ')}. Выпечку готовят сами в кофейне. Ориентируйся на средние продажи по дням недели и списания: если много списывают — снижай, если почти не списывают и продажи растут — можно чуть больше. Учти погоду из прогноза. Для каждой позиции дай 7 целых чисел строго в порядке дат. В notes — что убрать или поменять в ассортименте, если видно по данным.`,
+        '{"summary":"2–3 предложения","plan":[{"item":"","qty":[0,0,0,0,0,0,0]}],"notes":["…"]}',
+        {dates: fc, items: rows.map(x => ({item: x.name, soldPerWeekdayAvg: Object.fromEntries(WD.map((w, i) => [w, +x.b.sold[i].toFixed(2)])), writeoffPerWeekdayAvg: Object.fromEntries(WD.map((w, i) => [w, +x.b.waste[i].toFixed(2)])), formulaPlan: x.plan})),
+         daysPerWeekday: Object.fromEntries(WD.map((w, i) => [w, st.nWd[i]]))});
+      const plan = (r.plan || []).filter(p => p && p.item && Array.isArray(p.qty)).map(p => ({name: p.item, plan: dates.map((_, i) => Math.max(0, Math.round(+p.qty[i] || 0)))}));
+      $('aiBakeAI').innerHTML = aiBox('План выпечки', r, plan.length ? `<div style="overflow-x:auto;margin-top:8px">${table(plan)}</div>` : '');
+    }catch(e){ $('aiBakeAI').innerHTML = aiErrBox(e); }
+  };
+
+  // ---- 4. reviews ----
+  $('aiRevGo').onclick = async () => {
+    const out = $('aiRevOut'), txt = $('aiReviews').value.trim();
+    if(txt.length < 15){ out.innerHTML = '<div class="card err">Вставь хотя бы один отзыв.</div>'; return; }
+    if(!AI.hasKey){ out.innerHTML = '<div class="card">Для разбора отзывов нужна нейросеть. Добавь ключ в «⚙ Настройки».</div>'; return; }
+    out.innerHTML = loadingBox('Нейросеть читает отзывы…');
+    let ctx = null;
+    if($('aiRevCtx').checked){
+      try{ const st = (await aiData()) && AI.stats; if(st && st.days.length){ const P = peakBase(st); ctx = {busyHoursByFormula: P.recs.map(x => `${WD[x.wd]} ${x.from}:00–${x.to}:00`), avgWaitByHour: (() => { const m = {}; for(let h = P.h0; h <= P.h1; h++){ const w = []; st.heat.forEach(row => w.push(...row[h].w)); if(w.length) m[h + ':00'] = +(w.reduce((a, b) => a + b, 0) / w.length).toFixed(1); } return m; })()}; } }catch(e){}
+    }
+    try{
+      const r = await askAI(
+        `Задача: разобрать отзывы гостей. 1) Найди повторяющиеся проблемы и закономерности (по времени, напиткам, сервису). Для каждой: сколько отзывов про это и что конкретно поменять в работе кофейни. Если есть данные приложения о часах пик — сверь с ними. 2) Для КАЖДОГО отзыва напиши ответ от лица кофейни: 2–4 предложения, тепло и по-человечески, без канцелярита и шаблонов, называй гостя по имени, если оно есть. На жалобу — признай проблему и скажи, что исправите (без обещаний скидок и подарков). На похвалу — поблагодари конкретно. Обращайся на «вы».`,
+        '{"summary":"2–3 предложения: общее впечатление","patterns":[{"title":"","count":0,"when":"когда чаще, если видно","fix":"что поменять"}],"replies":[{"guest":"имя или Гость","quote":"суть отзыва в 5–10 словах","reply":"текст ответа"}],"notes":["…"]}',
+        {reviews: txt.slice(0, 30000), appData: ctx || 'нет'});
+      const pats = (r.patterns || []).filter(p => p && p.title), reps = (r.replies || []).filter(p => p && p.reply);
+      out.innerHTML = aiBox('Что говорят гости', r, pats.length ? `<div style="margin-top:8px">${pats.map(p => `<div class="pat"><span class="cnt">${+p.count || 1}</span><b>${esc(p.title)}</b>${p.when ? `<div class="why">${esc(p.when)}</div>` : ''}<div style="font-size:14px;margin-top:3px">→ ${esc(p.fix || '')}</div></div>`).join('')}</div>` : '')
+        + (reps.length ? `<div class="card"><h4>Ответы гостям<span class="aitag">ИИ</span></h4>${reps.map((p, i) => `<div class="reply"><b>${esc(p.guest || 'Гость')}</b><div class="q">${esc(p.quote || '')}</div><div class="a" id="rep${i}">${esc(p.reply)}</div><button class="chipb" data-rcopy="${i}">Скопировать ответ</button></div>`).join('')}</div>` : '');
+    }catch(e){ out.innerHTML = aiErrBox(e); }
+  };
+  $('aiRevOut').addEventListener('click', e => { const b = e.target.closest('[data-rcopy]'); if(b) copyText($('rep' + b.dataset.rcopy).textContent); });
+
+  // ---- settings ----
+  function fillAiSet(){
+    const a = aiCfg();
+    $('aiReserve').value = a.reserve; $('aiCap').value = a.capacity; $('aiSyr').value = a.syrupMl; $('aiW').value = a.weeks;
+    $('aiRecipes').value = a.recipes; $('aiMods').value = a.mods; $('aiSup').value = a.suppliers; $('aiSetErr').textContent = '';
+  }
+  function drawKeyState(){
+    $('aiKeyState').innerHTML = AI.hasKey ? `<span class="okline">✓ Нейросеть подключена</span> · модель ${esc(AI.model || '')}` : 'Ключ ещё не добавлен. Пока работают только расчёты по формулам.';
+    $('aiKeyWarn').style.display = AI.hasKey ? 'none' : '';
+    if(AI.model && !$('aiModel').value) $('aiModel').value = AI.model;
+  }
+  async function aiStatus(){
+    try{ const r = await api('aiStatus', {pin: adminPin}); AI.hasKey = r.hasKey; AI.model = r.model; }
+    catch(e){ AI.hasKey = false; $('aiKeyState').innerHTML = `<span class="err">${esc(/Неизвестное действие/.test(e.message) ? 'В Google ещё старый скрипт. Обнови Code.gs и сделай «Новую версию» развёртывания (см. инструкцию).' : e.message)}</span>`; $('aiKeyWarn').style.display = ''; return; }
+    drawKeyState();
+  }
+  $('aiKeySave').onclick = async () => {
+    const key = $('aiKey').value.trim(), model = $('aiModel').value.trim(); $('aiKeyErr').textContent = '';
+    if(key && !/^[\w-]{20,}$/.test(key)) return $('aiKeyErr').textContent = 'Похоже, ключ скопирован не полностью.';
+    $('aiKeySave').disabled = true;
+    try{ const r = await api('aiSetKey', {pin: adminPin, key, model}); AI.hasKey = r.hasKey; AI.model = r.model; $('aiKey').value = ''; drawKeyState(); toast('Сохранено', false); }
+    catch(e){ $('aiKeyErr').textContent = e.message; }
+    finally{ $('aiKeySave').disabled = false; }
+  };
+  $('aiKeyTest').onclick = async () => {
+    $('aiKeyErr').textContent = ''; $('aiKeyTest').disabled = true; $('aiKeyTest').textContent = 'Проверяю…';
+    try{ const r = await api('aiTest', {pin: adminPin}, 60000); $('aiKeyState').innerHTML = `<span class="okline">✓ Работает.</span> Нейросеть ответила: «${esc(String(r.text).trim().slice(0, 160))}»`; }
+    catch(e){ $('aiKeyErr').textContent = e.message; }
+    finally{ $('aiKeyTest').disabled = false; $('aiKeyTest').textContent = 'Проверить связь'; }
+  };
+  $('aiSetSave').onclick = () => {
+    const cfg = clone(S.config);
+    cfg.ai = {reserve: Math.max(0, +$('aiReserve').value || 0), capacity: Math.max(5, +$('aiCap').value || 30), syrupMl: Math.max(1, +$('aiSyr').value || 20), weeks: Math.min(26, Math.max(1, +$('aiW').value || 4)),
+      recipes: $('aiRecipes').value.trim(), mods: $('aiMods').value.trim(), suppliers: $('aiSup').value.trim()};
+    const prev = S.config.ai; S.config.ai = cfg.ai; const b = buildModel(); S.config.ai = prev;
+    saveConfig(cfg, $('aiSetErr'), $('aiSetSave')).then(ok => { if(ok){ if(AI.data) AI.stats = computeStats(AI.data); if(b.bad.length) $('aiSetErr').textContent = 'Сохранено, но эти строки я не понял и пропущу: ' + b.bad.slice(0, 3).join(' / '); } });
+  };
+
+  // ---- navigation ----
+  function setAiSub(s){
+    AI.sub = s;
+    document.querySelectorAll('#aiTabs button').forEach(b => b.classList.toggle('on', b.dataset.ai === s));
+    document.querySelectorAll('.aisub').forEach(el => el.classList.toggle('on', el.id === 'ai-' + s));
+    $('aiBar').style.display = (s === 'set' || s === 'rev') ? 'none' : '';
+    if(s === 'set') fillAiSet();
+  }
+  $('aiTabs').addEventListener('click', e => { const b = e.target.closest('[data-ai]'); if(b) setAiSub(b.dataset.ai); });
+  $('aiWeeks').onchange = () => { AI.data = null; aiData().catch(e => $('aiErr').textContent = e.message); };
+  $('aiReload').onclick = () => aiData(true).catch(e => { $('aiInfo').textContent = ''; $('aiErr').textContent = e.message; });
+  function openAiPane(){
+    if(!$('aiWeeks').dataset.init){ $('aiWeeks').value = String([2,4,8,12].includes(+aiCfg().weeks) ? aiCfg().weeks : 4); $('aiWeeks').dataset.init = '1'; }
+    setAiSub(AI.sub); aiStatus();
+    if(!AI.data) aiData().catch(e => { $('aiInfo').textContent = ''; $('aiErr').textContent = e.message; });
+  }
 
   // ============ start ============
   load(); setSync(); renderStaff();
